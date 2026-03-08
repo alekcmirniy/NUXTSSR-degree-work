@@ -4,4 +4,8 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     ssr: true,
     modules: ["@pinia/nuxt"],
+    typescript: {
+        strict: true, // включить строгий режим
+        typeCheck: true, // проверять типы при сборке
+    },
 });
