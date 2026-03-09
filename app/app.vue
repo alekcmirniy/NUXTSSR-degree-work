@@ -1,10 +1,12 @@
 <template>
     <div>
         <NuxtRouteAnnouncer />
-        <NuxtWelcome />
+        <NuxtLayout>
+            <NuxtPage />
+        </NuxtLayout>
     </div>
 </template>
 
-<style lang="scss" scoped>
-@import "./css/main.scss";
+<style lang="scss">
+@use "./assets/main.scss";
 </style>

@@ -1,0 +1,21 @@
+{
+    "version": 1.1,
+    "atDirectives": [
+        {
+            "name": "@tailwind",
+            "description": "Используйте @tailwind для вставки базовых стилей Tailwind"
+        },
+        {
+            "name": "@apply",
+            "description": "Используйте @apply для встраивания утилитных классов Tailwind в ваш CSS"
+        },
+        {
+            "name": "@layer",
+            "description": "Указывает слой Tailwind: base, components, или utilities"
+        },
+        {
+            "name": "@config",
+            "description": "Указывает конфигурационный файл Tailwind"
+        }
+    ]
+}

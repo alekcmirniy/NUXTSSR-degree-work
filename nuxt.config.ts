@@ -13,6 +13,5 @@ export default defineNuxtConfig({
         strict: true,
         typeCheck: true,
     },
-    css: ["./app/css/main.scss"],
-    // удалите секцию vite с плагином tailwindcss
+    css: ["./app/assets/main.scss"],
 });

@@ -1,16 +1,15 @@
 <template>
-    <q-page class="row items-center justify-evenly">
-        <div class="posts-container text-weight-bolder">
+    <div class="flex items-center justify-evenly">
+        <div class="posts-container border-solid border-black">
             {{ error }}
             {{ posts }}
         </div>
-    </q-page>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { useAxiosStore } from "src/stores/axios-store";
-import axios from "axios";
-import { PostData } from "src/utils/interfaces";
+import { useAxiosStore } from "#imports";
+import type { PostData } from "~/utils/interfaces/posts";
 
 const { posts, error } = useAxiosStore();
 
@@ -218,24 +217,24 @@ const mockPosts: PostData[] = [
     },
 ];
 
-defineOptions({
-    async preFetch({ store }) {
-        const { fetchData, setData } = useAxiosStore(store);
-        const token =
-            "bc2ebae0bc2ebae0bc2ebae077bf124310bbc2ebc2ebae0d532f741804d1ca1f9603141";
-        const groupId = -122496494;
-        const url = `https://api.vk.com/method/wall.get?owner_id=${groupId}&count=20&access_token=${token}&v=5.199`;
+// defineOptions({
+//     async preFetch({ store }) {
+//         const { fetchData, setData } = useAxiosStore(store);
+//         const token =
+//             "bc2ebae0bc2ebae0bc2ebae077bf124310bbc2ebc2ebae0d532f741804d1ca1f9603141";
+//         const groupId = -122496494;
+//         const url = `https://api.vk.com/method/wall.get?owner_id=${groupId}&count=20&access_token=${token}&v=5.199`;
 
-        const handledRes = await fetchData("posts", async () => {
-            const res = (await axios.get(url)) as any;
-            console.log(res.data.error || "Ошибки нет");
-            if (!res) throw new Error("Has no response!");
-            else if (res.data.error) throw new Error(res.data.error.error_msg);
-            return res;
-        });
-        setData("posts", handledRes);
-    },
-});
+//         const handledRes = await fetchData("posts", async () => {
+//             const res = (await axios.get(url)) as any;
+//             console.log(res.data.error || "Ошибки нет");
+//             if (!res) throw new Error("Has no response!");
+//             else if (res.data.error) throw new Error(res.data.error.error_msg);
+//             return res;
+//         });
+//         setData("posts", handledRes);
+//     },
+// });
 </script>
 
 <style lang="scss" scoped>
