@@ -4,7 +4,7 @@
             <h1 class="header-text">{{ postData.headerText }}</h1>
             <aside class="header-aside-container">
                 <div class="add-to-favourites">⚝</div>
-                <div class="post-date">{{ 'преобразованная дата' }}</div>
+                <div class="post-date">{{ "преобразованная дата" }}</div>
             </aside>
         </header>
 
@@ -20,17 +20,16 @@
 </template>
 
 <script lang="ts" setup>
-import { PostData } from 'src/utils/interfaces';
+import type { PostData } from "../utils/interfaces/posts";
 
 const props = defineProps<{
-    postData: PostData
+    postData: PostData;
 }>();
 const postData = props.postData;
 
 const transformData = () => {
     //преобразование даты под шаблон
-}
-
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,18 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from "nuxt/config";
+
+// nuxt.config.ts
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     ssr: true,
-    modules: ["@pinia/nuxt"],
+    modules: [
+        "@pinia/nuxt",
+        "@nuxtjs/tailwindcss", // добавьте этот модуль
+    ],
     typescript: {
-        strict: true, // включить строгий режим
-        typeCheck: true, // проверять типы при сборке
+        strict: true,
+        typeCheck: true,
     },
+    css: ["./app/css/main.scss"],
+    // удалите секцию vite с плагином tailwindcss
 });
