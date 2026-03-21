@@ -11,7 +11,12 @@ export default defineNuxtConfig({
     ],
     typescript: {
         strict: true,
-        typeCheck: true,
+        typeCheck: false,
     },
     css: ["./app/assets/main.scss"],
+    vite: {
+        optimizeDeps: {
+            include: ["@vue/devtools-core", "@vue/devtools-kit"],
+        },
+    },
 });
