@@ -5,10 +5,7 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     ssr: true,
-    modules: [
-        "@pinia/nuxt",
-        "@nuxtjs/tailwindcss", // добавьте этот модуль
-    ],
+    modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxt/fonts"],
     typescript: {
         strict: true,
         typeCheck: false,
