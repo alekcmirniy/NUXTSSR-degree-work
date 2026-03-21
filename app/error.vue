@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import type { NuxtError } from "#app";
-const router = useRouter();
+
 const { error } = defineProps<{ error: NuxtError }>();
 
 let intervalId = 0;
@@ -23,14 +23,11 @@ const count = ref<number>(10);
 
 async function goBack(): Promise<void> {
     clearInterval(intervalId);
-    if (window.history.length) router.back();
-    else await navigateTo("/");
+    clearError({ redirect: "/" });
 }
 
 onMounted(() => {
-    intervalId = setInterval(() => {
-        count.value--;
-    }, 1000);
+    intervalId = setInterval(() => count.value--, 1000);
 });
 
 onBeforeMount(() => {
@@ -38,7 +35,7 @@ onBeforeMount(() => {
 });
 
 watch(count, async (newValue) => {
-    if (newValue === 0) await navigateTo("/");
+    if (newValue <= 0) await goBack();
 });
 </script>
 
