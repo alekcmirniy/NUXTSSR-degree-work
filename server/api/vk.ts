@@ -1,4 +1,3 @@
-// server/api/vk.ts
 export default defineEventHandler(async () => {
     const token =
         "ac28c211ac28c211ac28c21133af175a94aac28ac28c211c5971a43961675a8bbcda07d";

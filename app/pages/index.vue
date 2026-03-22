@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { useAxiosStore } from "#imports";
+import type { PostsRequest } from "~/utils/interfaces/posts";
 
 const axiosStore = useAxiosStore();
 const { isLoading, posts, error } = storeToRefs(axiosStore);
@@ -22,7 +23,7 @@ const { fetchData, setData } = axiosStore;
 const fetchVKPosts = async () => await $fetch("/api/vk");
 
 onMounted(async () => {
-    const res = await fetchData("posts", fetchVKPosts);
-    setData("posts", res);
+    const { items }: PostsRequest = await fetchData("posts", fetchVKPosts);
+    setData("posts", items);
 });
 </script>
