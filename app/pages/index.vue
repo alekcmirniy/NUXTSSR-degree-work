@@ -18,12 +18,16 @@ import type { PostsRequest } from "~/utils/interfaces/posts";
 const axiosStore = useAxiosStore();
 const { isLoading, posts, error } = storeToRefs(axiosStore);
 
-const { fetchData, setData } = axiosStore;
+const { setData } = axiosStore;
 
-const fetchVKPosts = async () => await $fetch("/api/vk");
-
-onMounted(async () => {
-    const { items }: PostsRequest = await fetchData("posts", fetchVKPosts);
-    setData("posts", items);
+const {
+    data,
+    error: fetchError,
+    status,
+} = await useFetch("/api/vk", {
+    onResponse: ({ response }) => {
+        setData("posts", (response._data as PostsRequest).items);
+    },
 });
+// setData("posts", (data.value as PostsRequest).items);
 </script>
