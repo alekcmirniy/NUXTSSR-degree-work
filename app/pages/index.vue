@@ -20,14 +20,9 @@ const { isLoading, posts, error } = storeToRefs(axiosStore);
 
 const { setData } = axiosStore;
 
-const {
-    data,
-    error: fetchError,
-    status,
-} = await useFetch("/api/vk", {
-    onResponse: ({ response }) => {
-        setData("posts", (response._data as PostsRequest).items);
-    },
-});
-// setData("posts", (data.value as PostsRequest).items);
+const { data, error: fetchError, status } = await useFetch("/api/vk"); //реализовать с кешированием
+
+if (data.value) {
+    setData("posts", data.value.response.items);
+}
 </script>

@@ -25,7 +25,7 @@ export const useAxiosStore = defineStore("axios", () => {
             isLoading.value = false;
         }
     };
-    const setData = (key: string, newData: {}) =>
+    const setData = (key: string, newData: any) =>
         (results.value[key] = newData);
 
     const posts = computed<PostData[]>(() => results.value["posts"]);
