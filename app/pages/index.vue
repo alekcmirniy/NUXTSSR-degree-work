@@ -1,10 +1,11 @@
 <template>
     <div class="flex items-center justify-evenly">
         <div
-            v-if="!isLoading"
-            class="border-solid border-black border-[2px] h-[1000px] w-[60vw]"
+            v-if="!pending"
+            class="border-solid border-black border-[2px] mx-20"
         >
             {{ error }}
+            <br />
             {{ posts }}
         </div>
         <div v-else>Loading Posts</div>
@@ -16,18 +17,31 @@ import { useAxiosStore } from "#imports";
 import type { PostsRequest } from "~/utils/interfaces/posts";
 
 const axiosStore = useAxiosStore();
-const { isLoading, posts, error } = storeToRefs(axiosStore);
 
 const { setData } = axiosStore;
+const { posts } = storeToRefs(axiosStore);
 
-const {
-    data,
-    error: fetchError,
-    status,
-} = await useFetch("/api/vk", {
+const hasPosts = computed<boolean>(() => posts.value && posts.value.length > 0);
+
+const { error, pending, execute } = await useFetch("/api/vk", {
+    method: "GET",
+    immediate: false,
+
     onResponse: ({ response }) => {
-        setData("posts", (response._data as PostsRequest).items);
+        setData("posts", response._data.response.items as PostsRequest);
+    },
+    onResponseError: ({ error }) => {
+        console.error(error);
     },
 });
-// setData("posts", (data.value as PostsRequest).items);
+
+if (!hasPosts.value) {
+    await execute();
+}
+
+const refreshPosts = async () => {
+    if (!pending.value) {
+        await execute();
+    }
+};
 </script>
