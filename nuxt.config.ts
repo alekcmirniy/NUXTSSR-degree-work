@@ -5,7 +5,12 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     ssr: true,
-    modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "@nuxt/fonts"],
+    modules: [
+        "@pinia/nuxt",
+        "@nuxtjs/tailwindcss",
+        "@nuxt/fonts",
+        "nuxt-auth-utils",
+    ],
     typescript: {
         strict: true,
         typeCheck: false,
@@ -16,4 +21,5 @@ export default defineNuxtConfig({
             include: ["@vue/devtools-core", "@vue/devtools-kit"],
         },
     },
+    runtimeConfig: { sessionPassword: import.meta.env.NUXT_SESSION_PASSWORD },
 });
