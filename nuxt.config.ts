@@ -10,10 +10,12 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "@nuxt/fonts",
         "nuxt-auth-utils",
+        "@nuxt/ui",
     ],
     typescript: {
         strict: true,
-        typeCheck: false,
+        typeCheck: true,
+        shim: true,
     },
     css: ["./app/assets/main.scss"],
     vite: {

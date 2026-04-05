@@ -9,8 +9,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useUserSession } from "#imports";
+
 const { session, user, ready, openInPopup, loggedIn, fetch, clear } =
     useUserSession();
+
+definePageMeta({ middleware: "auth" });
 </script>
 
 <style lang="scss" scoped></style>
