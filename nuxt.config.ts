@@ -21,5 +21,5 @@ export default defineNuxtConfig({
             include: ["@vue/devtools-core", "@vue/devtools-kit"],
         },
     },
-    runtimeConfig: { sessionPassword: import.meta.env.NUXT_SESSION_PASSWORD },
+    runtimeConfig: { sessionPassword: process.env.NUXT_SESSION_PASSWORD },
 });
