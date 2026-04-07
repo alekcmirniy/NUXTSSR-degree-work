@@ -1,5 +1,6 @@
 <template>
     <div>Вход</div>
+    <div>Регистрация</div>
     <form class="flex flex-col gap-4 justify-center items-center">
         <label for="email">Почта</label>
         <input name="email" v-model="email" />
