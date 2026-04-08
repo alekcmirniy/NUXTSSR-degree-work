@@ -17,7 +17,7 @@ export default defineNuxtConfig({
         typeCheck: false,
         shim: true,
     },
-    css: ["./app/assets/main.scss"],
+    css: ["~/assets/css/main.scss"],
     vite: {
         optimizeDeps: {
             include: ["@vue/devtools-core", "@vue/devtools-kit"],

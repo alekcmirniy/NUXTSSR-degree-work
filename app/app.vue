@@ -7,6 +7,7 @@
     </div>
 </template>
 
-<style lang="scss">
-@use "./assets/main.scss";
-</style>
+<script lang="ts" setup>
+useHead({ title: "ГУАП - Социальная площадка", htmlAttrs: { lang: "ru" } });
+</script>
+<style lang="scss"></style>
