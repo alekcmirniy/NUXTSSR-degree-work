@@ -1,37 +1,43 @@
 <template>
-    <div>Вход</div>
-    <div>Регистрация</div>
-    <form class="flex flex-col gap-4 justify-center items-center">
-        <label for="email">Почта</label>
-        <input name="email" v-model="email" />
+    <div class="flex flex-col">
+        <div class="text-center">
+            {{ currentForm === "login" ? "Вход" : "Регистрация" }}
+        </div>
+        <br />
+        <div>
+            <p>Уже есть аккаунт?</p>
+            <div class="switch-form-link" @click="setForm('login')">Вход</div>
+        </div>
 
-        <label for="password">Пароль</label>
-        <input name="password" v-model="password" />
-
-        <button @click="login">Войти</button>
-    </form>
+        <div class="switch-form-link" @click="setForm('register')">
+            Регистрация
+        </div>
+    </div>
+    <div v-if="currentForm === 'login'">
+        <LoginForm />
+    </div>
+    <div v-else>
+        <RegisterForm />
+    </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+type AvailableForm = "login" | "register";
+
+const currentForm = ref<AvailableForm>("register");
 const email = ref("");
 const password = ref("");
 const error = ref("");
 
-const login = async () => {
-    try {
-        await $fetch("/api/auth/login", {
-            method: "POST",
-            body: {
-                email: email.value,
-                password: password.value,
-            },
-        });
-
-        navigateTo("/");
-    } catch {
-        error.value = "Ошибка входа";
-    }
-};
+function setForm(newVal: AvailableForm): void {
+    if (currentForm.value === newVal) return;
+    currentForm.value = newVal;
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.switch-form-link {
+    @apply cursor-pointer;
+    @apply hover:text-yellow-100 transition-colors;
+}
+</style>
