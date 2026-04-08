@@ -4,14 +4,6 @@
             {{ currentForm === "login" ? "Вход" : "Регистрация" }}
         </div>
         <br />
-        <div>
-            <p>Уже есть аккаунт?</p>
-            <div class="switch-form-link" @click="setForm('login')">Вход</div>
-        </div>
-
-        <div class="switch-form-link" @click="setForm('register')">
-            Регистрация
-        </div>
     </div>
     <div v-if="currentForm === 'login'">
         <LoginForm />
@@ -19,15 +11,19 @@
     <div v-else>
         <RegisterForm />
     </div>
+
+    <div>
+        <p>Уже есть аккаунт?</p>
+        <div class="switch-form-link" @click="setForm('login')">Вход</div>
+    </div>
+
+    <div class="switch-form-link" @click="setForm('register')">Регистрация</div>
 </template>
 
 <script setup lang="ts">
 type AvailableForm = "login" | "register";
 
 const currentForm = ref<AvailableForm>("register");
-const email = ref("");
-const password = ref("");
-const error = ref("");
 
 function setForm(newVal: AvailableForm): void {
     if (currentForm.value === newVal) return;

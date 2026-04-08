@@ -8,6 +8,10 @@ export default defineEventHandler(async (event) => {
 
     const { email, password } = body;
 
+    if (!email || !password) {
+        throw createError({ statusCode: 400, statusMessage: "Empty credits" });
+    }
+
     const user = db
         .select()
         .from(usersTable)

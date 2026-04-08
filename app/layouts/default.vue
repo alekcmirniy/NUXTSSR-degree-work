@@ -4,9 +4,17 @@ import Header from "~/components/header.vue";
 </script>
 
 <template>
-    <div class="my-10 flex flex-col justify-center items-center gap-10">
+    <div class="my-10 flex flex-col justify-between items-center layout">
         <Header />
-        <slot />
+        <div class="content"><slot /></div>
+
         <Footer />
     </div>
 </template>
+
+<style lang="scss" scoped>
+$layout_height: calc(100vh - 5em);
+.layout {
+    height: $layout_height;
+}
+</style>

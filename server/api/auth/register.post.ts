@@ -36,5 +36,9 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Cannot create user",
         });
 
+    await setUserSession(event, {
+        user: { id: newUserId, email },
+    });
+
     return { success: true };
 });

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full">
+    <div class="w-full header">
         <ul class="flex justify-evenly">
             <li>
                 <NuxtLink to="/" class="link">Главная</NuxtLink>

@@ -1,29 +1,54 @@
 <template>
-    <form class="flex flex-col gap-4 justify-center items-center">
-        <label for="email">Почта</label>
-        <input name="email" v-model="email" />
-
-        <label for="password">Пароль</label>
-        <input name="password" v-model="password" />
-
-        <button @click="login">Зарегистрироваться</button>
-    </form>
+    <UForm :state="formState" :schema="formSchema" class="default-form">
+        <UFormField label="Почта" name="email">
+            <UInput v-model="formState.email" />
+        </UFormField>
+        <UFormField label="Пароль" name="password">
+            <UInput v-model="formState.password" />
+        </UFormField>
+        <UButton @click="validate">Зарегистрироваться</UButton>
+    </UForm>
 </template>
 
 <script lang="ts" setup>
-const login = async () => {
+import * as z from "zod";
+
+const { handleError } = useHandleError();
+
+const formSchema = z.object({
+    email: z.email("Некорректный email"),
+    password: z.string("Пароль обязателен").min(8, "Не менее 8 символов"),
+});
+
+type schema = z.output<typeof formSchema>;
+
+const formState = reactive<Partial<schema>>({
+    email: undefined,
+    password: undefined,
+});
+
+async function validate() {
+    try {
+        if (formState.email?.length && formState.password?.length) {
+            await register();
+        } else throw new Error("Форма регистрации не заполнена!");
+    } catch (e: unknown) {
+        handleError(e as Error);
+    }
+}
+const register = async () => {
     try {
         await $fetch("/api/auth/register", {
             method: "POST",
             body: {
-                email: email.value,
-                password: password.value,
+                email: formState.email,
+                password: formState.password,
             },
         });
 
-        navigateTo("/profile"); //страницу успешной регистрации?
-    } catch {
-        error.value = "Ошибка входа";
+        navigateTo("/profile");
+    } catch (e: unknown) {
+        console.error(e);
     }
 };
 </script>

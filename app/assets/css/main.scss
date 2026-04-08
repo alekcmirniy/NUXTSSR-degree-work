@@ -10,3 +10,15 @@
 body {
     background-color: gray;
 }
+
+.default-form {
+    @apply flex flex-col gap-4;
+
+    input {
+        padding: 2px 4px;
+    }
+
+    button {
+        border: solid 2px black;
+    }
+}

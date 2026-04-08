@@ -1,29 +1,54 @@
 <template>
-    <form class="flex flex-col gap-4 justify-center items-center">
-        <label for="email">Почта</label>
-        <input name="email" v-model="email" />
-
-        <label for="password">Пароль</label>
-        <input name="password" v-model="password" />
-
-        <button @click="login">Войти</button>
-    </form>
+    <UForm :state="formState" :schema="formSchema" class="default-form">
+        <UFormField label="Почта" name="email">
+            <UInput v-model="formState.email" />
+        </UFormField>
+        <UFormField label="Пароль" name="password">
+            <UInput v-model="formState.password" />
+        </UFormField>
+        <UButton @click="validate">Войти</UButton>
+    </UForm>
 </template>
 
 <script lang="ts" setup>
+import * as z from "zod";
+
+const { handleError } = useHandleError();
+
+const formSchema = z.object({
+    email: z.email("Некорректный email"),
+    password: z.string("Пароль обязателен"),
+});
+
+type schema = z.output<typeof formSchema>;
+
+const formState = reactive<Partial<schema>>({
+    email: undefined,
+    password: undefined,
+});
+
+async function validate() {
+    try {
+        if (formState.email?.length && formState.password?.length) {
+            await login();
+        } else throw new Error("Форма входа не заполнена!");
+    } catch (e: unknown) {
+        handleError(e as Error);
+    }
+}
 const login = async () => {
     try {
         await $fetch("/api/auth/login", {
             method: "POST",
             body: {
-                email: email.value,
-                password: password.value,
+                email: formState.email,
+                password: formState.password,
             },
         });
 
         navigateTo("/profile");
-    } catch {
-        error.value = "Ошибка входа";
+    } catch (e: unknown) {
+        console.error(e);
     }
 };
 </script>
