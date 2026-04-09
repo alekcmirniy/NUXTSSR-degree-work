@@ -6,7 +6,9 @@ import Header from "~/components/header.vue";
 <template>
     <div class="my-10 flex flex-col justify-between items-center layout">
         <Header />
-        <div class="content"><slot /></div>
+        <div class="content size-full flex items-center justify-center">
+            <slot />
+        </div>
 
         <Footer />
     </div>

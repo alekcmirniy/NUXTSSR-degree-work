@@ -1,12 +1,12 @@
 <template>
     <UForm :state="formState" :schema="formSchema" class="default-form">
         <UFormField label="Почта" name="email">
-            <UInput v-model="formState.email" />
+            <UInput v-model="formState.email" type="email" />
         </UFormField>
         <UFormField label="Пароль" name="password">
-            <UInput v-model="formState.password" />
+            <UInput v-model="formState.password" type="password" />
         </UFormField>
-        <UButton @click="validate">Войти</UButton>
+        <UButton @click="validate" type="submit">Войти</UButton>
     </UForm>
 </template>
 

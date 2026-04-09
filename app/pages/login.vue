@@ -1,23 +1,25 @@
 <template>
-    <div class="flex flex-col">
-        <div class="text-center">
-            {{ currentForm === "login" ? "Вход" : "Регистрация" }}
+    <div class="container">
+        <div class="flex flex-col">
+            <div class="text-center">
+                {{ currentForm === "login" ? "Вход" : "Регистрация" }}
+            </div>
+            <br />
         </div>
-        <br />
-    </div>
-    <div v-if="currentForm === 'login'">
-        <LoginForm />
-    </div>
-    <div v-else>
-        <RegisterForm />
-    </div>
+        <div class="h-full">
+            <LoginForm v-if="currentForm === 'login'" />
+            <RegisterForm v-else />
+        </div>
 
-    <div>
-        <p>Уже есть аккаунт?</p>
-        <div class="switch-form-link" @click="setForm('login')">Вход</div>
-    </div>
+        <div>
+            <p>Уже есть аккаунт?</p>
+            <div class="switch-form-link" @click="setForm('login')">Вход</div>
+        </div>
 
-    <div class="switch-form-link" @click="setForm('register')">Регистрация</div>
+        <div class="switch-form-link" @click="setForm('register')">
+            Регистрация
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">

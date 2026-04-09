@@ -1,12 +1,19 @@
 <template>
-    <UForm :state="formState" :schema="formSchema" class="default-form">
+    <UForm
+        :state="formState"
+        :schema="formSchema(formState.password)"
+        class="default-form"
+    >
         <UFormField label="Почта" name="email">
-            <UInput v-model="formState.email" />
+            <UInput v-model="formState.email" type="email" />
         </UFormField>
         <UFormField label="Пароль" name="password">
-            <UInput v-model="formState.password" />
+            <UInput v-model="formState.password" type="password" />
         </UFormField>
-        <UButton @click="validate">Зарегистрироваться</UButton>
+        <UFormField label="Повторите пароль" name="confirmPassword">
+            <UInput v-model="formState.confirmPassword" type="password" />
+        </UFormField>
+        <UButton @click="validate" type="submit">Зарегистрироваться</UButton>
     </UForm>
 </template>
 
@@ -15,16 +22,24 @@ import * as z from "zod";
 
 const { handleError } = useHandleError();
 
-const formSchema = z.object({
-    email: z.email("Некорректный email"),
-    password: z.string("Пароль обязателен").min(8, "Не менее 8 символов"),
-});
+function formSchema(psw?: string) {
+    return z.object({
+        email: z.email("Некорректный email"),
+        password: z.string("Пароль обязателен").min(8, "Не менее 8 символов"),
+        confirmPassword: z
+            .string("Пароль обязателен")
+            .min(8, "Не менее 8 символов")
+            .refine((val) => val === psw, { error: "Пароли должны совпадать" }),
+    });
+}
 
-type schema = z.output<typeof formSchema>;
+type FormSchemaType = ReturnType<typeof formSchema>;
+type schema = z.output<FormSchemaType>;
 
 const formState = reactive<Partial<schema>>({
     email: undefined,
     password: undefined,
+    confirmPassword: undefined,
 });
 
 async function validate() {
