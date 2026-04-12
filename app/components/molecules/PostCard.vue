@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { PostData } from "../utils/interfaces/posts";
+import type { PostData } from "../../utils/interfaces/posts";
 
 const { postData } = defineProps<{ postData: PostData }>();
 
