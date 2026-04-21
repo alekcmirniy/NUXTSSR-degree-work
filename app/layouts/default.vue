@@ -4,7 +4,7 @@ import Header from "~/components/organisms/header.vue";
 </script>
 
 <template>
-    <div class="my-10 flex flex-col justify-between items-center layout">
+    <div class="my-10 flex flex-col justify-between items-center">
         <Header />
         <div class="content size-full flex items-center justify-center">
             <slot />
@@ -14,9 +14,4 @@ import Header from "~/components/organisms/header.vue";
     </div>
 </template>
 
-<style lang="scss" scoped>
-$layout_height: calc(100vh - 5em);
-.layout {
-    height: $layout_height;
-}
-</style>
+<style lang="scss" scoped></style>
