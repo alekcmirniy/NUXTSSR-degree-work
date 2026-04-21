@@ -2,6 +2,13 @@ import { defineNuxtConfig } from "nuxt/config";
 
 // nuxt.config.ts
 export default defineNuxtConfig({
+    components: {
+        dirs: [
+            "~/components/atoms",
+            "~/components/organisms",
+            "~/components/molecules",
+        ],
+    },
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     ssr: true,
