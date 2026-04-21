@@ -61,6 +61,9 @@ const register = async () => {
             },
         });
 
+        const { fetch } = useUserSession();
+        await fetch();
+
         navigateTo("/profile");
     } catch (e: unknown) {
         console.error(e);

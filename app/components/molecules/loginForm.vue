@@ -46,6 +46,9 @@ const login = async () => {
             },
         });
 
+        const { fetch } = useUserSession();
+        await fetch();
+
         navigateTo("/profile");
     } catch (e: unknown) {
         console.error(e);

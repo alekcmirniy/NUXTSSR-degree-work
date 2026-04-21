@@ -15,6 +15,10 @@ const { session, user, ready, openInPopup, loggedIn, fetch, clear } =
     useUserSession();
 
 definePageMeta({ middleware: "auth" });
+
+watch(loggedIn, () => {
+    if (!loggedIn.value) navigateTo("/login");
+});
 </script>
 
 <style lang="scss" scoped></style>
