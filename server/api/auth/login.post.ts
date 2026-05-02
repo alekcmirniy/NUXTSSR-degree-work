@@ -1,4 +1,4 @@
-import { usersTable } from "~~/server/db/schema";
+import { usersTable } from "~~/server/db/usersSchema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 

@@ -1,4 +1,4 @@
-import { usersTable } from "../db/schema";
+import { usersTable } from "~~/server/db/usersSchema";
 import { useDrizzle } from "../utils/drizzle";
 
 export default defineEventHandler(async (event) => {
