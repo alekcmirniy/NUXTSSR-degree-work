@@ -6,8 +6,11 @@ export default defineEventHandler(async (event) => {
     const db = useDrizzle();
     const body = await readBody(event);
 
-    const { email, password } = body;
+    const { email, password, ...rest } = body;
     const emailNormalized = (email as string).toLowerCase().trim();
+    const nameNormalized = (rest.name as string).trim();
+    const surnameNormalized = (rest.surname as string).trim();
+    const patronymicNormalized = (rest.patronymic || "").trim();
 
     const existingUser = db
         .select()
@@ -25,10 +28,14 @@ export default defineEventHandler(async (event) => {
     const passwordHash = await bcrypt.hash(password, 10);
     const newUserId = db
         .insert(usersTable)
-        .values({ email: emailNormalized, passwordHash })
+        .values({
+            email: emailNormalized,
+            passwordHash,
+            name: nameNormalized,
+            surname: surnameNormalized,
+            patronymic: patronymicNormalized,
+        })
         .run().lastInsertRowid;
-
-    console.log(newUserId);
 
     if (!newUserId)
         throw createError({
@@ -37,7 +44,13 @@ export default defineEventHandler(async (event) => {
         });
 
     await setUserSession(event, {
-        user: { id: newUserId, email },
+        user: {
+            id: newUserId,
+            email,
+            name: nameNormalized,
+            surname: surnameNormalized,
+            patronymic: patronymicNormalized,
+        },
     });
 
     return { success: true };

@@ -15,6 +15,13 @@
       "when": 1776783070966,
       "tag": "0001_melodic_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1777715490151,
+      "tag": "0002_wide_tigra",
+      "breakpoints": true
     }
   ]
 }

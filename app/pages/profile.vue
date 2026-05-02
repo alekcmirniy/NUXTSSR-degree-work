@@ -11,14 +11,21 @@
 <script lang="ts" setup>
 import { useUserSession } from "#imports";
 
-const { session, user, ready, openInPopup, loggedIn, fetch, clear } =
-    useUserSession();
+const { user, loggedIn, clear, fetch } = useUserSession();
 
 definePageMeta({ middleware: "auth" });
 
-watch(loggedIn, () => {
-    if (!loggedIn.value) navigateTo("/login");
-});
+//проблема - на странице профиля перезагрузка и всё слетает на логин.
+
+watch(
+    loggedIn,
+    () => {
+        if (!loggedIn.value) navigateTo("/login");
+    },
+    { immediate: true },
+);
+
+onMounted(async () => await fetch());
 </script>
 
 <style lang="scss" scoped></style>

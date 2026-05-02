@@ -1,12 +1,17 @@
 <template>
-    <UForm :state="formState" :schema="formSchema" class="default-form">
+    <UForm
+        :state="formState"
+        :schema="formSchema"
+        class="default-form"
+        @submit="onSubmit"
+    >
         <UFormField label="Почта" name="email">
             <UInput v-model="formState.email" type="email" />
         </UFormField>
         <UFormField label="Пароль" name="password">
             <UInput v-model="formState.password" type="password" />
         </UFormField>
-        <UButton @click="validate" type="submit">Войти</UButton>
+        <UButton type="submit">Войти</UButton>
     </UForm>
 </template>
 
@@ -27,16 +32,15 @@ const formState = reactive<Partial<schema>>({
     password: undefined,
 });
 
-async function validate() {
+async function onSubmit() {
     try {
-        if (formState.email?.length && formState.password?.length) {
-            await login();
-        } else throw new Error("Форма входа не заполнена!");
+        await login();
     } catch (e: unknown) {
         handleError(e as Error);
     }
 }
-const login = async () => {
+
+async function login(): Promise<void> {
     try {
         await $fetch("/api/auth/login", {
             method: "POST",
@@ -53,5 +57,5 @@ const login = async () => {
     } catch (e: unknown) {
         console.error(e);
     }
-};
+}
 </script>
