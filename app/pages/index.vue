@@ -18,6 +18,8 @@ import type { PostsRequest } from "~/utils/interfaces/posts";
 
 const axiosStore = useAxiosStore();
 
+const { $fetchInstanse } = useNuxtApp();
+
 const { setData } = axiosStore;
 const { posts } = storeToRefs(axiosStore);
 
@@ -26,6 +28,7 @@ const hasPosts = computed<boolean>(() => posts.value && posts.value.length > 0);
 const { error, pending, execute } = await useFetch("/api/vk", {
     method: "GET",
     immediate: false,
+    $fetch: $fetchInstanse,
 
     onResponse: ({ response }) => {
         setData("posts", response._data.response.items as PostsRequest);

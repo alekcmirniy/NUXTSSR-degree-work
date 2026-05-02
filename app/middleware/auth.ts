@@ -1,6 +1,11 @@
 export default defineNuxtRouteMiddleware(async () => {
     try {
-        await $fetch("/api/auth/me");
+        const { fetch, loggedIn } = useUserSession();
+        await fetch();
+
+        if (!loggedIn.value) {
+            navigateTo("/login");
+        }
     } catch {
         return navigateTo("/login");
     }
