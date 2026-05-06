@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { computed, ref } from "vue";
-import type { PostData } from "~/utils/interfaces/posts";
+import type { IncomingPost, PostsRequest } from "~/utils/interfaces/posts";
 
 export const useAxiosStore = defineStore("axios", () => {
     const results = ref<Record<string, any>>({});
@@ -28,7 +28,7 @@ export const useAxiosStore = defineStore("axios", () => {
     const setData = (key: string, newData: any) =>
         (results.value[key] = newData);
 
-    const posts = computed<PostData[]>(() => results.value["posts"]);
+    const posts = computed<PostsRequest["items"]>(() => results.value["posts"]);
 
     return { fetchData, setData, results, isLoading, error, posts };
 });

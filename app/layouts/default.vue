@@ -4,14 +4,13 @@ import Header from "~/components/organisms/header.vue";
 </script>
 
 <template>
-    <div class="my-10 flex flex-col justify-between items-center">
+    <div class="min-h-screen w-full bg-slate-950 text-slate-100">
         <Header />
-        <div class="content size-full flex items-center justify-center">
+
+        <div class="content w-full flex-1">
             <slot />
         </div>
 
         <Footer />
     </div>
 </template>
-
-<style lang="scss" scoped></style>

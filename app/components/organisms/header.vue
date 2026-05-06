@@ -1,28 +1,44 @@
 <template>
-    <div class="w-full header">
-        <ul class="flex justify-evenly">
-            <li>
-                <NuxtLink to="/" class="link">Главная</NuxtLink>
-            </li>
-            <li>
-                <NuxtLink to="/profile" class="link">Профиль</NuxtLink>
-            </li>
-            <li>
-                <NuxtLink to="/shedule" class="link">Расписание</NuxtLink>
-            </li>
-            <li>
-                <NuxtLink to="/chat" class="link">Чат</NuxtLink>
-            </li>
-            <li>
-                <NuxtLink to="/credits" class="link">О нас</NuxtLink>
-            </li>
-        </ul>
-    </div>
+    <header
+        class="w-full border-b border-white/10 bg-slate-950/80 backdrop-blur"
+    >
+        <div
+            class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 lg:px-8"
+        >
+            <NuxtLink
+                to="/"
+                class="text-lg font-semibold tracking-tight text-white"
+            >
+                NuxtSSR
+            </NuxtLink>
+
+            <nav class="flex flex-wrap items-center justify-end gap-2 sm:gap-4">
+                <NuxtLink to="/" class="link" exact-active-class="link-active"
+                    >Главная</NuxtLink
+                >
+                <NuxtLink to="/profile" class="link" active-class="link-active"
+                    >Профиль</NuxtLink
+                >
+                <NuxtLink to="/schedule" class="link" active-class="link-active"
+                    >Расписание</NuxtLink
+                >
+                <NuxtLink to="/chat" class="link" active-class="link-active"
+                    >Чат</NuxtLink
+                >
+                <NuxtLink to="/about" class="link" active-class="link-active"
+                    >О нас</NuxtLink
+                >
+            </nav>
+        </div>
+    </header>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .link {
-    @apply hover:text-blue-500 transition-colors;
-    border: solid 2px brown;
+    @apply rounded-full px-3 py-2 text-sm text-slate-300 transition-colors hover:text-white hover:bg-white/5;
+}
+
+.link-active {
+    @apply bg-white/10 text-white;
 }
 </style>
