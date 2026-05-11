@@ -25,7 +25,7 @@
                 <NuxtLink to="/chat" class="link" active-class="link-active"
                     >Чат</NuxtLink
                 >
-                <NuxtLink to="/about" class="link" active-class="link-active"
+                <NuxtLink to="/credits" class="link" active-class="link-active"
                     >О нас</NuxtLink
                 >
             </nav>

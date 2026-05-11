@@ -29,6 +29,13 @@
       "when": 1777735206289,
       "tag": "0003_narrow_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1778515289726,
+      "tag": "0004_clumsy_genesis",
+      "breakpoints": true
     }
   ]
 }
