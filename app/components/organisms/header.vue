@@ -9,7 +9,7 @@
                 to="/"
                 class="text-lg font-semibold tracking-tight text-white"
             >
-                NuxtSSR
+                Платформа ГУАП
             </NuxtLink>
 
             <nav class="flex flex-wrap items-center justify-end gap-2 sm:gap-4">

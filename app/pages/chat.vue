@@ -179,8 +179,7 @@ import type {
 // definePageMeta({ middleware: "auth" });
 
 const route = useRoute();
-const { user } = useUserSession();
-
+const { user, loggedIn } = useUserSession();
 const currentUserId = computed(() => Number((user.value as any)?.id));
 
 const conversations = ref<ConversationPreview[]>([]);
