@@ -50,6 +50,20 @@
       "when": 1778769329861,
       "tag": "0006_useful_hawkeye",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1778771656977,
+      "tag": "0007_ancient_killraven",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1778771672975,
+      "tag": "0008_lying_ultimates",
+      "breakpoints": true
     }
   ]
 }
