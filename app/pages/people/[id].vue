@@ -3,7 +3,7 @@
         <div class="mx-auto w-full max-w-5xl">
             <UButton
                 to="/people"
-                color="neutral"
+                color="primary"
                 variant="soft"
                 class="mb-4 ui-btn ui-btn-secondary"
             >
@@ -76,7 +76,10 @@
                                 }}</span>
                             </div>
                             <div class="rounded-2xl bg-black/20 px-4 py-3">
-                                <span class="text-white">{{ role }}</span>
+                                Роль:
+                                <span class="text-white">{{
+                                    person.role
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -111,14 +114,31 @@
                                 <p class="mt-1 text-lg text-white">Активен</p>
                             </UCard>
                         </div>
-                        <UButton
-                            :to="{ path: '/chat', query: { with: person.id } }"
-                            color="primary"
-                            size="lg"
-                            class="mt-16 ui-btn ui-btn-secondary"
-                        >
-                            Написать в чате
-                        </UButton>
+
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <UButton
+                                v-if="canWriteMessage"
+                                :to="{
+                                    path: '/chat',
+                                    query: { with: person.id },
+                                }"
+                                color="primary"
+                                size="lg"
+                            >
+                                Написать в чате
+                            </UButton>
+
+                            <UButton
+                                v-else
+                                color="primary"
+                                variant="soft"
+                                size="lg"
+                                disabled
+                                class="ui-btn ui-btn-secondary"
+                            >
+                                Это ваш профиль
+                            </UButton>
+                        </div>
                     </div>
                 </div>
             </UCard>
@@ -137,11 +157,14 @@
 import type { UserProfile } from "~/utils/interfaces/users";
 
 const route = useRoute();
-const id = computed(() => String(route.params.id));
+const { user } = useUserSession();
 
 const { data: person, error } = await useFetch<UserProfile>(
-    `/api/users/${id.value}`,
+    `/api/users/${route.params.id}`,
 );
+
+const currentUserId = computed(() => Number((user.value as any)?.id));
+const personId = computed(() => Number(route.params.id));
 
 const fullName = computed(() => {
     if (!person.value) return "";
@@ -158,9 +181,12 @@ const initials = computed(() => {
         .toUpperCase();
 });
 
-const role = computed(() =>
-    person.value?.role === "student" ? "Студент" : "Преподаватель",
-);
+const canWriteMessage = computed(() => {
+    return (
+        Number.isFinite(currentUserId.value) &&
+        currentUserId.value !== personId.value
+    );
+});
 
 const defaultBio = "Пользователь ещё не заполнил информацию о себе.";
 const errorMessage = computed(

@@ -22,7 +22,7 @@
                 <NuxtLink to="/schedule" class="link" active-class="link-active"
                     >Расписание</NuxtLink
                 >
-                <NuxtLink to="people" class="link" active-class="link-active"
+                <NuxtLink to="/people" class="link" active-class="link-active"
                     >Люди</NuxtLink
                 >
                 <NuxtLink to="/chat" class="link" active-class="link-active"

@@ -92,9 +92,9 @@
                             </div>
 
                             <UButton
-                                class="ui-btn ui-btn-secondary"
                                 :to="`/people/${selectedConversation.otherUser.id}`"
-                                color="neutral"
+                                color="primary"
+                                class="ui-btn ui-btn-secondary"
                                 variant="soft"
                                 size="sm"
                             >
@@ -132,11 +132,11 @@
                                 class="flex-1"
                             />
                             <UButton
-                                class="ui-btn ui-btn-secondary"
                                 type="submit"
                                 color="primary"
                                 size="lg"
                                 :loading="sending"
+                                class="ui-btn ui-btn-secondary"
                             >
                                 Отправить
                             </UButton>
@@ -168,6 +168,15 @@
                 </div>
             </section>
         </div>
+
+        <UAlert
+            v-if="selfChatError"
+            class="mx-auto mt-6 max-w-7xl"
+            color="error"
+            variant="soft"
+            title="Нельзя открыть чат с самим собой"
+            description="Выберите другого пользователя."
+        />
     </div>
 </template>
 
@@ -178,10 +187,9 @@ import type {
     ConversationPreview,
 } from "~/utils/interfaces/chat";
 
-// definePageMeta({ middleware: "auth" });
-
 const route = useRoute();
-const { user, loggedIn } = useUserSession();
+const { user } = useUserSession();
+
 const currentUserId = computed(() => Number((user.value as any)?.id));
 
 const conversations = ref<ConversationPreview[]>([]);
@@ -189,9 +197,9 @@ const selectedConversation = ref<ConversationPreview | null>(null);
 const messages = ref<ChatMessage[]>([]);
 const draft = ref("");
 const search = ref("");
-const pending = ref(false);
 const sending = ref(false);
 const messagesWrap = ref<HTMLElement | null>(null);
+const selfChatError = ref(false);
 
 let pollingId: ReturnType<typeof setInterval> | null = null;
 
@@ -240,6 +248,15 @@ async function loadConversations() {
 }
 
 async function loadThread(otherUserId: number) {
+    if (otherUserId === currentUserId.value) {
+        selfChatError.value = true;
+        selectedConversation.value = null;
+        messages.value = [];
+        return;
+    }
+
+    selfChatError.value = false;
+
     const thread = await $fetch<ChatThreadResponse>(
         `/api/chats/with/${otherUserId}`,
     );
@@ -249,7 +266,7 @@ async function loadThread(otherUserId: number) {
         pairKey: thread.conversation.pairKey,
         updatedAt: thread.conversation.updatedAt,
         otherUser: thread.counterpart,
-        lastMessage: thread.messages.at(-1) ? thread.messages.at(-1)! : null,
+        lastMessage: thread.messages.at(-1) || null,
         unreadCount: 0,
     };
 
@@ -270,8 +287,7 @@ async function loadThread(otherUserId: number) {
 
 async function openConversationById(otherUserId: number) {
     await loadThread(otherUserId);
-
-    if (process.client) {
+    if (otherUserId !== currentUserId.value) {
         await navigateTo({
             path: "/chat",
             query: { with: String(otherUserId) },
@@ -303,24 +319,18 @@ async function refreshActiveThread() {
 }
 
 onMounted(async () => {
-    pending.value = true;
+    await loadConversations();
 
-    try {
-        await loadConversations();
-
-        const withId = Number(route.query.with);
-        if (Number.isFinite(withId)) {
-            await loadThread(withId);
-        } else if (conversations.value[0]) {
-            await loadThread(conversations.value[0].otherUser.id);
-        }
-
-        pollingId = setInterval(async () => {
-            await Promise.all([loadConversations(), refreshActiveThread()]);
-        }, 5000);
-    } finally {
-        pending.value = false;
+    const withId = Number(route.query.with);
+    if (Number.isFinite(withId)) {
+        await loadThread(withId);
+    } else if (conversations.value[0]) {
+        await loadThread(conversations.value[0].otherUser.id);
     }
+
+    pollingId = setInterval(async () => {
+        await Promise.all([loadConversations(), refreshActiveThread()]);
+    }, 5000);
 });
 
 onBeforeUnmount(() => {
