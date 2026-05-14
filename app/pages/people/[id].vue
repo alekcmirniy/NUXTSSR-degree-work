@@ -109,6 +109,13 @@
                                 <p class="mt-1 text-lg text-white">Активен</p>
                             </UCard>
                         </div>
+                        <UButton
+                            :to="{ path: '/chat', query: { with: person.id } }"
+                            color="primary"
+                            size="lg"
+                        >
+                            Написать в чате
+                        </UButton>
                     </div>
                 </div>
             </UCard>

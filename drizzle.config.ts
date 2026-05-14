@@ -4,7 +4,7 @@ export default defineConfig({
     out: "./drizzle",
     schema: [
         "./server/db/usersSchema.ts",
-        "./server/db/messagesSchema.ts",
+        "./server/db/chatsSchema.ts",
         "./server/db/scheduleSchema.ts",
     ],
     dialect: "sqlite",

@@ -4,9 +4,9 @@ export default defineNuxtRouteMiddleware(async () => {
         await fetch();
 
         if (!loggedIn.value) {
-            navigateTo("/login");
+            await navigateTo("/login");
         }
     } catch {
-        return navigateTo("/login");
+        return await navigateTo("/login");
     }
 });
