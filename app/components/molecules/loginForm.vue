@@ -33,7 +33,15 @@
             <span class="text-slate-500">Без лишних шагов</span>
         </div>
 
-        <UButton type="submit" color="primary" size="lg" block> Войти </UButton>
+        <UButton
+            type="submit"
+            color="primary"
+            size="lg"
+            block
+            class="ui-btn ui-btn-secondary"
+        >
+            Войти
+        </UButton>
     </UForm>
 </template>
 

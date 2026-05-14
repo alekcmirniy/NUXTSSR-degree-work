@@ -85,7 +85,13 @@
             личной подписью.
         </div>
 
-        <UButton type="submit" color="primary" size="lg" block>
+        <UButton
+            type="submit"
+            color="primary"
+            size="lg"
+            block
+            class="ui-btn ui-btn-secondary"
+        >
             Зарегистрироваться
         </UButton>
     </UForm>

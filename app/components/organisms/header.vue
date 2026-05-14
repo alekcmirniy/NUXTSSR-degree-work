@@ -7,9 +7,9 @@
         >
             <NuxtLink
                 to="/"
-                class="text-lg font-semibold tracking-tight text-white"
+                class="ui-btn ui-btn-secondary text-lg font-semibold tracking-tight text-white"
             >
-                Платформа ГУАП
+                ГУАП - Социальная площадка
             </NuxtLink>
 
             <nav class="flex flex-wrap items-center justify-end gap-2 sm:gap-4">

@@ -65,6 +65,7 @@
                         />
 
                         <UButton
+                            class="ui-btn ui-btn-secondary"
                             type="submit"
                             size="xl"
                             color="primary"

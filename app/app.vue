@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <UApp>
         <NuxtRouteAnnouncer />
         <NotifyError />
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
-    </div>
+    </UApp>
 </template>
 
 <script lang="ts" setup>

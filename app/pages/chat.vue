@@ -92,6 +92,7 @@
                             </div>
 
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 :to="`/people/${selectedConversation.otherUser.id}`"
                                 color="neutral"
                                 variant="soft"
@@ -131,6 +132,7 @@
                                 class="flex-1"
                             />
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 type="submit"
                                 color="primary"
                                 size="lg"

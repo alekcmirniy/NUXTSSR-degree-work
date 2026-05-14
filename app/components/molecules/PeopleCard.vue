@@ -1,7 +1,7 @@
 <template>
     <NuxtLink
         :to="`/people/${person.id}`"
-        class="group block overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/8"
+        class="ui-btn group block overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/8"
     >
         <div class="flex items-start gap-4">
             <div class="relative h-16 w-16 shrink-0">

@@ -99,6 +99,7 @@
 
                         <div class="flex flex-wrap gap-3">
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 color="primary"
                                 size="lg"
                                 icon="i-lucide-save"
@@ -108,6 +109,7 @@
                                 Сохранить
                             </UButton>
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 color="neutral"
                                 variant="soft"
                                 size="lg"
@@ -386,11 +388,13 @@
                                         to="/login"
                                         color="primary"
                                         size="lg"
+                                        class="ui-btn ui-btn-secondary"
                                         block
                                     >
                                         Войти
                                     </UButton>
                                     <UButton
+                                        class="ui-btn ui-btn-secondary"
                                         to="/login"
                                         color="neutral"
                                         variant="soft"

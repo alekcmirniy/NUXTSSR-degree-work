@@ -1,7 +1,12 @@
 <template>
     <div class="w-full px-4 py-6 lg:px-8">
         <div class="mx-auto w-full max-w-5xl">
-            <UButton to="/people" color="neutral" variant="soft" class="mb-4">
+            <UButton
+                to="/people"
+                color="neutral"
+                variant="soft"
+                class="mb-4 ui-btn ui-btn-secondary"
+            >
                 ← К списку людей
             </UButton>
 
@@ -13,7 +18,7 @@
                     <div class="p-6 lg:p-8">
                         <div class="flex items-start gap-4">
                             <div
-                                class="h-24 w-24 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
+                                class="h-24 w-48 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
                             >
                                 <img
                                     v-if="person.avatarUrl"
@@ -71,16 +76,13 @@
                                 }}</span>
                             </div>
                             <div class="rounded-2xl bg-black/20 px-4 py-3">
-                                Роль:
-                                <span class="text-white">{{
-                                    person.role
-                                }}</span>
+                                <span class="text-white">{{ role }}</span>
                             </div>
                         </div>
                     </div>
 
                     <div
-                        class="border-t border-white/10 p-6 lg:border-l lg:border-t-0 lg:p-8"
+                        class="flex flex-col items-center border-t border-white/10 p-6 lg:border-l lg:border-t-0 lg:p-8"
                     >
                         <h2 class="text-lg font-semibold text-white">
                             О пользователе
@@ -113,6 +115,7 @@
                             :to="{ path: '/chat', query: { with: person.id } }"
                             color="primary"
                             size="lg"
+                            class="mt-16 ui-btn ui-btn-secondary"
                         >
                             Написать в чате
                         </UButton>
@@ -154,6 +157,10 @@ const initials = computed(() => {
         .join("")
         .toUpperCase();
 });
+
+const role = computed(() =>
+    person.value?.role === "student" ? "Студент" : "Преподаватель",
+);
 
 const defaultBio = "Пользователь ещё не заполнил информацию о себе.";
 const errorMessage = computed(

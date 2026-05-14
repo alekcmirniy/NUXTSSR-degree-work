@@ -35,7 +35,8 @@
 
                     <div class="mt-8 flex flex-wrap gap-4">
                         <UButton
-                            to="https://priem.guap.ru/bakalavriat"
+                            class="ui-btn ui-btn-secondary"
+                            to="https://priem.guap.ru/bach"
                             target="_blank"
                             size="lg"
                             color="primary"
@@ -44,7 +45,8 @@
                         </UButton>
 
                         <UButton
-                            to="https://priem.guap.ru/magistratura"
+                            class="ui-btn ui-btn-secondary"
+                            to="https://priem.guap.ru/mag"
                             target="_blank"
                             size="lg"
                             color="neutral"
@@ -247,13 +249,19 @@
                     </div>
 
                     <div class="flex gap-4">
-                        <UButton to="/" size="lg" color="primary">
+                        <UButton
+                            class="ui-btn ui-btn-secondary"
+                            to="/"
+                            size="lg"
+                            color="primary"
+                        >
                             На главную
                         </UButton>
 
                         <UButton
                             to="/people"
                             size="lg"
+                            class="ui-btn ui-btn-secondary"
                             color="neutral"
                             variant="soft"
                         >

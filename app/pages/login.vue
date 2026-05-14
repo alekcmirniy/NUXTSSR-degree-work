@@ -125,6 +125,7 @@
                             <div class="rounded-full bg-black/20 p-1">
                                 <UButton
                                     size="sm"
+                                    class="ui-btn ui-btn-secondary"
                                     :variant="
                                         currentForm === 'login'
                                             ? 'solid'
@@ -140,6 +141,7 @@
                                     Вход
                                 </UButton>
                                 <UButton
+                                    class="ui-btn ui-btn-secondary"
                                     size="sm"
                                     :variant="
                                         currentForm === 'register'

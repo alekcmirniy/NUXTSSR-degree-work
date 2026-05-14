@@ -19,7 +19,8 @@
                             size="lg"
                             class="w-fit"
                         >
-                            SSR · тематическая платформа для сообщества
+                            Рады вас видеть на тематической платформе для
+                            сообщества!
                         </UChip>
 
                         <div class="space-y-3">
@@ -40,6 +41,7 @@
 
                         <div class="flex flex-wrap gap-3">
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 to="#feed"
                                 size="lg"
                                 icon="i-lucide-arrow-down"
@@ -49,6 +51,7 @@
                                 К ленте
                             </UButton>
                             <UButton
+                                class="ui-btn ui-btn-secondary"
                                 to="/profile"
                                 size="lg"
                                 icon="i-lucide-user-round"
@@ -119,6 +122,7 @@
                         </div>
 
                         <UButton
+                            class="ui-btn ui-btn-secondary"
                             icon="i-lucide-refresh-cw"
                             variant="soft"
                             color="primary"
