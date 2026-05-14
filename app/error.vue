@@ -18,20 +18,21 @@ import type { NuxtError } from "#app";
 
 const { error } = defineProps<{ error: NuxtError }>();
 
-let intervalId = 0;
+let intervalId: NodeJS.Timeout | null = null;
 const count = ref<number>(10);
 
 async function goBack(): Promise<void> {
-    clearInterval(intervalId);
-    clearError({ redirect: "/" });
+    if (intervalId) clearInterval(intervalId);
+    clearError();
+    window.history.back();
 }
 
 onMounted(() => {
     intervalId = setInterval(() => count.value--, 1000);
 });
 
-onBeforeMount(() => {
-    clearInterval(intervalId);
+onUnmounted(() => {
+    if (intervalId) clearInterval(intervalId);
 });
 
 watch(count, async (newValue) => {

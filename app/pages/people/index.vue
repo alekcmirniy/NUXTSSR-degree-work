@@ -36,7 +36,7 @@
 
                     <UForm
                         :state="formState"
-                        class="grid gap-3 lg:grid-cols-[0.7fr_1.2fr_0.9fr_0.9fr_auto]"
+                        class="default-form grid gap-3 lg:grid-cols-[0.7fr_1.2fr_0.9fr_0.9fr_auto]"
                         @submit="applyFilters"
                     >
                         <USelect

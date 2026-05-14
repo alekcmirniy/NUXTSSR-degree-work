@@ -39,7 +39,7 @@
 
                     <UForm
                         :state="formState"
-                        class="flex w-full max-w-xl flex-col gap-3 sm:flex-row"
+                        class="default-form flex w-full max-w-xl flex-col gap-3 sm:flex-row"
                         @submit="loadSchedule"
                     >
                         <UInput

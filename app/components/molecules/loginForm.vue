@@ -3,7 +3,7 @@
     <UForm
         :state="formState"
         :schema="formSchema"
-        class="space-y-5"
+        class="default-form space-y-5"
         @submit="onSubmit"
     >
         <UFormField label="Почта" name="email">

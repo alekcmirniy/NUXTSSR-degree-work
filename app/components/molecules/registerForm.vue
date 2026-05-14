@@ -4,7 +4,7 @@
         :validate-on="['input']"
         :state="formState"
         :schema="formSchema"
-        class="space-y-5"
+        class="default-form space-y-5"
         @submit="onSubmit"
     >
         <div class="grid gap-4 md:grid-cols-2">
