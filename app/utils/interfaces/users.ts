@@ -1,15 +1,3 @@
-// declare module "#auth-utils" {
-//     interface User {
-//         id: number;
-//         email: string;
-//         name: string;
-//         surname: string;
-//         patronymic: string;
-
-//     }
-// }
-
-/*
 export type UserRole = "student" | "teacher";
 
 export interface UserPreview {
@@ -29,4 +17,3 @@ export interface UserProfile extends UserPreview {
     createdAt: string;
     updatedAt: string;
 }
-*/

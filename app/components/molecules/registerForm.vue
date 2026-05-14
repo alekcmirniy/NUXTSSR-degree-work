@@ -69,6 +69,13 @@
                     class="w-full"
                 />
             </UFormField>
+
+            <UFormField name="isTeacher">
+                <UCheckbox
+                    v-model="formState.isTeacher"
+                    label="Я преподаватель"
+                />
+            </UFormField>
         </div>
 
         <div
@@ -111,6 +118,7 @@ const formSchema = z
         confirmPassword: z
             .string("Пароль обязателен")
             .min(8, "Не менее 8 символов"),
+        isTeacher: z.boolean().default(false),
     })
     .refine((data) => data.password === data.confirmPassword, {
         error: "Пароли должны совпадать",
@@ -125,6 +133,7 @@ const formState = reactive<Partial<Schema>>({
     email: undefined,
     password: undefined,
     confirmPassword: undefined,
+    isTeacher: false,
 });
 
 async function register(): Promise<void> {
@@ -136,6 +145,7 @@ async function register(): Promise<void> {
             patronymic: formState.patronymic,
             email: formState.email,
             password: formState.password,
+            isTeacher: formState.isTeacher,
         },
     });
 

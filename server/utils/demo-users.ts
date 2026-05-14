@@ -1,0 +1,48 @@
+import type { UserPreview } from "../../app/utils/interfaces/users";
+
+export const demoUsers: UserPreview[] = [
+    {
+        id: 1,
+        name: "Иван",
+        surname: "Петров",
+        patronymic: "Андреевич",
+        role: "student",
+        group: "2253",
+        department: "Кафедра 25",
+        bio: "Интересуюсь разработкой интерфейсов, Nuxt и современным вебом.",
+        avatarUrl: null,
+    },
+    {
+        id: 2,
+        name: "Мария",
+        surname: "Иванова",
+        patronymic: "Сергеевна",
+        role: "student",
+        group: "2251",
+        department: "Кафедра 25",
+        bio: "Делаю учебные проекты и люблю аккуратные продукты с хорошим UX.",
+        avatarUrl: null,
+    },
+    {
+        id: 3,
+        name: "Алексей",
+        surname: "Смирнов",
+        patronymic: "Олегович",
+        role: "teacher",
+        group: null,
+        department: "Инженерная школа ГУАП",
+        bio: "Преподаю дисциплины, связанные с сетями и информационными системами.",
+        avatarUrl: null,
+    },
+    {
+        id: 4,
+        name: "Екатерина",
+        surname: "Кузнецова",
+        patronymic: "Игоревна",
+        role: "teacher",
+        group: null,
+        department: "Кафедра 25",
+        bio: "Поддерживаю учебный процесс и курирую профильные дисциплины.",
+        avatarUrl: null,
+    },
+];
