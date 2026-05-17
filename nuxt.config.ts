@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     css: ["~/assets/css/main.scss"],
     vite: {
         optimizeDeps: {
-            include: ["@vue/devtools-core", "@vue/devtools-kit"],
+            include: ["@vue/devtools-core", "@vue/devtools-kit", "zod"],
         },
     },
     runtimeConfig: { sessionPassword: process.env.NUXT_SESSION_PASSWORD },
