@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { conversationsTable, messagesTable } from "~~/server/db/chatsSchema";
+import { messagesTable } from "~~/server/db/messagesSchema";
+import { conversationsTable } from "~~/server/db/conversationsSchema";
 
 const schema = z.object({
     content: z

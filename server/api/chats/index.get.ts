@@ -1,5 +1,6 @@
 import { desc, eq, or, and } from "drizzle-orm";
-import { conversationsTable, messagesTable } from "~~/server/db/chatsSchema";
+import { messagesTable } from "~~/server/db/messagesSchema";
+import { conversationsTable } from "~~/server/db/conversationsSchema";
 import { usersTable } from "~~/server/db/usersSchema";
 import type { ConversationPreview } from "~/utils/interfaces/chat";
 

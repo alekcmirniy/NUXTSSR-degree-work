@@ -94,9 +94,9 @@
                             <UButton
                                 :to="`/people/${selectedConversation.otherUser.id}`"
                                 color="primary"
-                                class="ui-btn ui-btn-secondary"
                                 variant="soft"
                                 size="sm"
+                                class="ui-btn ui-btn-secondary"
                             >
                                 Профиль
                             </UButton>
@@ -136,7 +136,6 @@
                                 color="primary"
                                 size="lg"
                                 :loading="sending"
-                                class="ui-btn ui-btn-secondary"
                             >
                                 Отправить
                             </UButton>
@@ -158,11 +157,18 @@
                             />
                         </div>
                         <h2 class="mt-4 text-2xl font-semibold text-white">
-                            Выберите диалог
+                            {{
+                                selfChatError
+                                    ? "Нельзя открыть чат с самим собой"
+                                    : "Выберите диалог"
+                            }}
                         </h2>
                         <p class="mt-2 text-sm leading-6 text-slate-300">
-                            Откройте человека из списка или нажмите «Написать в
-                            чате» на странице профиля.
+                            {{
+                                selfChatError
+                                    ? "Откройте профиль другого пользователя и нажмите «Написать в чате»."
+                                    : "Откройте человека из списка или нажмите «Написать в чате» на странице профиля."
+                            }}
                         </p>
                     </div>
                 </div>
@@ -170,12 +176,11 @@
         </div>
 
         <UAlert
-            v-if="selfChatError"
+            v-if="errorMessage"
             class="mx-auto mt-6 max-w-7xl"
             color="error"
             variant="soft"
-            title="Нельзя открыть чат с самим собой"
-            description="Выберите другого пользователя."
+            :title="errorMessage"
         />
     </div>
 </template>
@@ -200,6 +205,7 @@ const search = ref("");
 const sending = ref(false);
 const messagesWrap = ref<HTMLElement | null>(null);
 const selfChatError = ref(false);
+const errorMessage = ref<string | null>(null);
 
 let pollingId: ReturnType<typeof setInterval> | null = null;
 
@@ -248,6 +254,8 @@ async function loadConversations() {
 }
 
 async function loadThread(otherUserId: number) {
+    errorMessage.value = null;
+
     if (otherUserId === currentUserId.value) {
         selfChatError.value = true;
         selectedConversation.value = null;
@@ -275,6 +283,7 @@ async function loadThread(otherUserId: number) {
     await $fetch(`/api/chats/${thread.conversation.id}/read`, {
         method: "POST",
     });
+
     await loadConversations();
 
     nextTick(() => {
@@ -286,13 +295,10 @@ async function loadThread(otherUserId: number) {
 }
 
 async function openConversationById(otherUserId: number) {
-    await loadThread(otherUserId);
-    if (otherUserId !== currentUserId.value) {
-        await navigateTo({
-            path: "/chat",
-            query: { with: String(otherUserId) },
-        });
-    }
+    await navigateTo({
+        path: "/chat",
+        query: { with: String(otherUserId) },
+    });
 }
 
 async function sendMessage() {
@@ -308,30 +314,78 @@ async function sendMessage() {
 
         draft.value = "";
         await loadThread(selectedConversation.value.otherUser.id);
+    } catch (e: any) {
+        errorMessage.value =
+            e?.statusMessage || "Не удалось отправить сообщение";
     } finally {
         sending.value = false;
     }
 }
 
+async function openFromRoute() {
+    const withId = Number(route.query.with);
+
+    if (Number.isFinite(withId)) {
+        try {
+            await loadThread(withId);
+        } catch (e: any) {
+            errorMessage.value =
+                e?.statusMessage || "Не удалось открыть диалог";
+            selectedConversation.value = null;
+            messages.value = [];
+        }
+    } else if (conversations.value[0]) {
+        try {
+            await loadThread(conversations.value[0].otherUser.id);
+        } catch (e: any) {
+            errorMessage.value =
+                e?.statusMessage || "Не удалось открыть диалог";
+        }
+    }
+}
+
 async function refreshActiveThread() {
     if (!selectedConversation.value) return;
-    await loadThread(selectedConversation.value.otherUser.id);
+
+    try {
+        await loadThread(selectedConversation.value.otherUser.id);
+    } catch {
+        // silently ignore polling errors
+    }
 }
 
 onMounted(async () => {
-    await loadConversations();
-
-    const withId = Number(route.query.with);
-    if (Number.isFinite(withId)) {
-        await loadThread(withId);
-    } else if (conversations.value[0]) {
-        await loadThread(conversations.value[0].otherUser.id);
+    try {
+        await loadConversations();
+    } catch (e: any) {
+        errorMessage.value =
+            e?.statusMessage || "Не удалось загрузить список чатов";
     }
 
+    await openFromRoute();
+
     pollingId = setInterval(async () => {
-        await Promise.all([loadConversations(), refreshActiveThread()]);
+        await Promise.all([
+            loadConversations().catch(() => {}),
+            refreshActiveThread(),
+        ]);
     }, 5000);
 });
+
+watch(
+    () => route.query.with,
+    async (val) => {
+        const id = Number(val);
+        if (Number.isFinite(id)) {
+            try {
+                await loadThread(id);
+            } catch (e: any) {
+                errorMessage.value =
+                    e?.statusMessage || "Не удалось открыть диалог";
+            }
+        }
+    },
+);
 
 onBeforeUnmount(() => {
     if (pollingId) clearInterval(pollingId);

@@ -1,5 +1,6 @@
 import { and, eq, isNull, ne } from "drizzle-orm";
-import { conversationsTable, messagesTable } from "~~/server/db/chatsSchema";
+import { messagesTable } from "~~/server/db/messagesSchema";
+import { conversationsTable } from "~~/server/db/conversationsSchema";
 
 export default defineEventHandler(async (event) => {
     const { user } = await requireUserSession(event);

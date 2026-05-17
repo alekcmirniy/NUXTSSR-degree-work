@@ -124,6 +124,7 @@
                                 }"
                                 color="primary"
                                 size="lg"
+                                class="ui-btn ui-btn-secondary"
                             >
                                 Написать в чате
                             </UButton>
