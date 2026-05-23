@@ -20,14 +20,8 @@
                                     class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/10 text-3xl font-semibold text-white shadow-lg"
                                 >
                                     <img
-                                        v-if="
-                                            profilePhotoPreview || profilePhoto
-                                        "
-                                        :src="
-                                            profilePhotoPreview || profilePhoto
-                                        "
-                                        alt="Avatar"
-                                        class="h-full w-full object-cover"
+                                        v-if="profilePhoto"
+                                        :src="profilePhoto"
                                     />
                                     <span v-else>{{ userInitials }}</span>
                                 </div>
@@ -154,9 +148,21 @@
 
                                 <div class="grid gap-4 md:grid-cols-2">
                                     <UInput
+                                        v-model="department"
+                                        placeholder="Кафедра"
+                                    />
+
+                                    <UInput
+                                        v-if="profileRole === 'Студент'"
+                                        v-model="group"
+                                        placeholder="Номер группы"
+                                    />
+
+                                    <UInput
                                         v-model="profileLocation"
                                         placeholder="Город / страна"
                                     />
+
                                     <UInput
                                         v-model="profileHeadline"
                                         placeholder="Статус или подпись"
@@ -174,39 +180,6 @@
                                 </div>
                             </div>
                         </UCard>
-
-                        <div class="grid gap-4 md:grid-cols-3">
-                            <UCard
-                                class="border-white/10 bg-white/5 shadow-lg shadow-black/10"
-                            >
-                                <p class="text-sm text-slate-400">Публикации</p>
-                                <p
-                                    class="mt-2 text-2xl font-semibold text-white"
-                                >
-                                    {{ stats.posts }}
-                                </p>
-                            </UCard>
-                            <UCard
-                                class="border-white/10 bg-white/5 shadow-lg shadow-black/10"
-                            >
-                                <p class="text-sm text-slate-400">Подписчики</p>
-                                <p
-                                    class="mt-2 text-2xl font-semibold text-white"
-                                >
-                                    {{ stats.followers }}
-                                </p>
-                            </UCard>
-                            <UCard
-                                class="border-white/10 bg-white/5 shadow-lg shadow-black/10"
-                            >
-                                <p class="text-sm text-slate-400">Активность</p>
-                                <p
-                                    class="mt-2 text-2xl font-semibold text-white"
-                                >
-                                    {{ stats.activity }}
-                                </p>
-                            </UCard>
-                        </div>
 
                         <UCard
                             class="border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur"
@@ -498,6 +471,8 @@
 </template>
 
 <script setup lang="ts">
+import type { User } from "#auth-utils";
+
 const { user, loggedIn, clear } = useUserSession();
 
 useHead({
@@ -510,18 +485,15 @@ const fileInput = ref<HTMLInputElement | null>(null);
 
 const aboutMe = ref("");
 const profileHeadline = ref("Открыт к общению и новым проектам");
+
 const profileLocation = ref("");
+const department = ref("");
+const group = ref("");
 
 const profilePhoto = ref<string>();
 const profilePhotoPreview = ref<string>();
 
 const profileTags = ref(["news", "community", "design", "nuxt"]);
-
-const stats = reactive({
-    posts: 12,
-    followers: 248,
-    activity: 87,
-});
 
 const activityFeed = [
     {
@@ -550,7 +522,6 @@ const profileEmail = computed(() => {
 });
 
 const profileRole = computed(() => {
-    console.log(user.value);
     const current = user.value;
     return current?.role === "teacher" ? "Преподаватель" : "Студент";
 });
@@ -584,60 +555,53 @@ const completion = computed(() => {
     return Math.min(score, 100);
 });
 
-onMounted(() => {
-    if (!process.client) return;
-
-    const saved = localStorage.getItem("profile-draft");
-    if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            aboutMe.value = parsed.aboutMe ?? aboutMe.value;
-            profileHeadline.value =
-                parsed.profileHeadline ?? profileHeadline.value;
-            profileLocation.value =
-                parsed.profileLocation ?? profileLocation.value;
-            profilePhoto.value = parsed.profilePhoto ?? profilePhoto.value;
-        } catch {
-            // ignore malformed draft
-        }
-    }
-});
-
 onBeforeUnmount(() => {
     if (profilePhotoPreview.value?.startsWith("blob:")) {
         URL.revokeObjectURL(profilePhotoPreview.value);
     }
 });
-
-function onPhotoChange(event: Event) {
+async function onPhotoChange(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
+
     if (!file) return;
 
-    if (profilePhotoPreview.value?.startsWith("blob:")) {
-        URL.revokeObjectURL(profilePhotoPreview.value);
-    }
+    const formData = new FormData();
+    formData.append("file", file);
 
-    profilePhotoPreview.value = URL.createObjectURL(file);
+    const response = await $fetch<{ url: string }>("/api/upload", {
+        method: "POST",
+        body: formData,
+    });
+
+    profilePhoto.value = response.url;
 }
-
 async function saveProfile() {
     saving.value = true;
 
     try {
-        if (process.client) {
-            localStorage.setItem(
-                "profile-draft",
-                JSON.stringify({
-                    aboutMe: aboutMe.value,
-                    profileHeadline: profileHeadline.value,
-                    profileLocation: profileLocation.value,
-                    profilePhoto: profilePhoto.value,
-                }),
-            );
-        }
+        await $fetch("/api/profile/update", {
+            method: "POST",
+            body: {
+                body: {
+                    avatarUrl: profilePhoto.value,
+                    bio: aboutMe.value,
+                    department: department.value,
+                    group: group.value,
+                },
+            },
+        });
     } finally {
         saving.value = false;
     }
 }
+
+onMounted(async () => {
+    const profile = await $fetch<User>("/api/profile/me");
+
+    aboutMe.value = profile.bio || "";
+    department.value = profile.department || "";
+    group.value = profile.group || "";
+    profilePhoto.value = profile.avatarUrl || "";
+});
 </script>
