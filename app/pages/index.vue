@@ -19,23 +19,21 @@
                             size="lg"
                             class="w-fit"
                         >
-                            Рады вас видеть на тематической платформе для
-                            сообщества!
+                            Социальная площадка для сообщества
                         </UChip>
 
                         <div class="space-y-3">
                             <h1
                                 class="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl"
                             >
-                                Пространство для людей, идей и актуальных
-                                публикаций
+                                Социальная площадка с лентой, чатами и профилями
                             </h1>
                             <p
                                 class="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg"
                             >
-                                Главная страница собирает свежие посты из API и
-                                сразу показывает живую ленту без лишних
-                                переходов.
+                                Главная страница объединяет публикации
+                                сообщества, профили участников и точки входа в
+                                общение.
                             </p>
                         </div>
 
@@ -72,18 +70,18 @@
                             <div
                                 class="flex items-center justify-between text-sm text-slate-300"
                             >
-                                <span>SSR</span>
+                                <span>Лента постов</span>
                                 <UIcon
-                                    name="i-lucide-server"
+                                    name="i-lucide-layout-list"
                                     class="text-cyan-300"
                                 />
                             </div>
                             <div class="mt-3 text-3xl font-semibold text-white">
-                                Быстрый первый рендер
+                                Актуальные публикации
                             </div>
                             <p class="mt-2 text-sm leading-6 text-slate-300">
-                                Страница отрисовывается сразу на сервере и
-                                выглядит готовой без лишнего ожидания.
+                                Записи с медиа, реакциями, комментариями и
+                                понятными ссылками.
                             </p>
                         </div>
 
@@ -93,15 +91,15 @@
                             <div
                                 class="flex items-center justify-between text-sm text-slate-300"
                             >
-                                <span>Платформа</span>
+                                <span>Профили и чат</span>
                                 <UIcon
-                                    name="i-lucide-compass"
+                                    name="i-lucide-message-circle-more"
                                     class="text-indigo-300"
                                 />
                             </div>
                             <div class="mt-3 text-sm leading-6 text-slate-300">
-                                В шапке уже живут основные разделы: главная,
-                                профиль, расписание, чат и о нас.
+                                Платформа связывает людей, обсуждения и
+                                публикации в единую социальную среду.
                             </div>
                         </div>
                     </div>
@@ -115,10 +113,6 @@
                             <h2 class="text-2xl font-semibold text-white">
                                 Лента публикаций
                             </h2>
-                            <p class="mt-1 text-sm text-slate-400">
-                                Последние записи из API VK с аккуратной
-                                карточной подачей.
-                            </p>
                         </div>
 
                         <UButton
@@ -133,7 +127,10 @@
                         </UButton>
                     </div>
 
-                    <div v-if="pending && !posts.length" class="grid gap-4">
+                    <div
+                        v-if="initialPending && !normalizedPosts.length"
+                        class="grid gap-4"
+                    >
                         <div
                             v-for="i in 3"
                             :key="i"
@@ -142,27 +139,52 @@
                     </div>
 
                     <UAlert
-                        v-else-if="error"
+                        v-else-if="combinedError && !normalizedPosts.length"
                         color="error"
                         variant="soft"
                         title="Не удалось загрузить посты"
-                        :description="String(error.message || error)"
+                        :description="combinedError"
                     />
 
                     <div
-                        v-else-if="!posts.length"
+                        v-else-if="!normalizedPosts.length"
                         class="rounded-3xl border border-dashed border-white/15 bg-white/5 p-8 text-center text-slate-300"
                     >
                         Пока нет публикаций для отображения.
                     </div>
 
-                    <div v-else class="grid gap-4">
-                        <PostCard
-                            v-for="post in normalizedPosts"
-                            :key="`${post.id}`"
-                            :post-data="post"
+                    <template v-else>
+                        <div class="grid gap-4">
+                            <PostCard
+                                v-for="post in normalizedPosts"
+                                :key="`${post.ownerId}:${post.id}`"
+                                :post-data="post"
+                            />
+                        </div>
+
+                        <div v-if="loadingMore" class="grid gap-4 pt-1">
+                            <div
+                                v-for="i in 2"
+                                :key="i"
+                                class="h-56 animate-pulse rounded-3xl border border-white/10 bg-white/5"
+                            />
+                        </div>
+
+                        <UAlert
+                            v-if="combinedError && normalizedPosts.length"
+                            class="mt-2"
+                            color="warning"
+                            variant="soft"
+                            title="Часть ленты сейчас недоступна"
+                            :description="combinedError"
                         />
-                    </div>
+                    </template>
+
+                    <div
+                        ref="moreSentinel"
+                        class="h-1 w-full"
+                        aria-hidden="true"
+                    />
                 </div>
 
                 <aside class="space-y-4">
@@ -170,82 +192,44 @@
                         class="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/10 backdrop-blur"
                     >
                         <h3 class="text-lg font-semibold text-white">
-                            Что есть на платформе
+                            Что уже есть на платформе
                         </h3>
+
                         <div class="mt-4 space-y-3 text-sm text-slate-300">
                             <div
                                 class="flex items-start gap-3 rounded-2xl bg-black/20 p-3"
                             >
                                 <UIcon
-                                    name="i-lucide-badge-info"
-                                    class="mt-0.5 text-cyan-300"
+                                    name="i-lucide-newspaper"
+                                    class="size-8 mt-0.5 text-cyan-300"
                                 />
                                 <div>
                                     <div class="font-medium text-white">
-                                        Тематическая главная
+                                        Лента и карточки
                                     </div>
                                     <div class="mt-1 leading-6">
-                                        Показывает публикации, контекст и
-                                        быстрые переходы к разделам.
+                                        Публикации выглядят как полноценная
+                                        лента сообщества с медиа, реакциями и
+                                        комментариями.
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="flex items-start gap-3 rounded-2xl bg-black/20 p-3"
-                            >
-                                <UIcon
-                                    name="i-lucide-clock-3"
-                                    class="mt-0.5 text-indigo-300"
-                                />
-                                <div>
-                                    <div class="font-medium text-white">
-                                        Расписание и события
-                                    </div>
-                                    <div class="mt-1 leading-6">
-                                        Здесь удобно потом добавить анонсы
-                                        встреч и активности по дням.
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="flex items-start gap-3 rounded-2xl bg-black/20 p-3"
-                            >
-                                <UIcon
-                                    name="i-lucide-message-circle"
-                                    class="mt-0.5 text-fuchsia-300"
-                                />
-                                <div>
-                                    <div class="font-medium text-white">
-                                        Чат и люди
-                                    </div>
-                                    <div class="mt-1 leading-6">
-                                        Социальный слой платформы будет
-                                        дополнять ленту, а не спорить с ней.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
 
-                    <section
-                        class="rounded-3xl border border-white/10 bg-gradient-to-br from-white/8 to-white/5 p-5 shadow-lg shadow-black/10"
-                    >
-                        <h3 class="text-lg font-semibold text-white">
-                            Сейчас в фокусе
-                        </h3>
-                        <div class="mt-4 grid gap-3 text-sm text-slate-300">
-                            <div class="rounded-2xl bg-black/20 p-4">
-                                <div class="text-white">Посты из API</div>
-                                <div class="mt-1 leading-6">
-                                    Нормализация данных уже готова под карточки
-                                    и дальнейшую работу с медиа.
-                                </div>
-                            </div>
-                            <div class="rounded-2xl bg-black/20 p-4">
-                                <div class="text-white">Современный вид</div>
-                                <div class="mt-1 leading-6">
-                                    Тёмная тема, мягкие градиенты и чистые сетки
-                                    под SSR-платформу.
+                            <div
+                                class="flex items-start gap-3 rounded-2xl bg-black/20 p-3"
+                            >
+                                <UIcon
+                                    name="i-lucide-message-circle-more"
+                                    class="size-6 mt-0.5 text-cyan-300"
+                                />
+                                <div>
+                                    <div class="font-medium text-white">
+                                        Чат и обсуждения
+                                    </div>
+                                    <div class="mt-1 leading-6">
+                                        Комментарии, реакции и репосты собраны в
+                                        одном месте.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -257,81 +241,289 @@
 </template>
 
 <script setup lang="ts">
-import type { PostData, PostsRequest } from "~/utils/interfaces/posts";
+import type {
+    NormalizedReaction,
+    PostData,
+    VkGroup,
+    VkProfile,
+    VkWallItem,
+    VkWallResponse,
+} from "~/utils/interfaces/posts";
 
-const axiosStore = useAxiosStore();
-const { setData } = axiosStore;
-const { posts } = storeToRefs(axiosStore);
+const PAGE_SIZE = 6;
 
+const loadedPosts = ref<VkWallItem[]>([]);
+const totalAvailable = ref<number | null>(null);
+const profileMap = ref<Record<number, VkProfile>>({});
+const groupMap = ref<Record<number, VkGroup>>({});
+const loadingMore = ref(false);
 const refreshing = ref(false);
-const hasPosts = computed(
-    () => Array.isArray(posts.value) && posts.value.length > 0,
-);
+const loadError = ref("");
+const moreSentinel = ref<HTMLElement | null>(null);
 
-const { $fetchInstanse } = useNuxtApp();
+type RichTextToken =
+    | { type: "text"; value: string }
+    | { type: "link"; href: string; label: string }
+    | { type: "newline" };
 
-const { error, pending, execute } = await useFetch("/api/vk", {
-    method: "GET",
-    immediate: false,
-    $fetch: $fetchInstanse,
-    onResponse: ({ response }) => {
-        const apiPosts = response._data?.response?.items as
-            | PostsRequest["items"]
-            | undefined;
+const reactionMetaById: Record<number, { emoji: string; label: string }> = {
+    1: { emoji: "👍", label: "Нравится" },
+    2: { emoji: "❤️", label: "Супер" },
+    3: { emoji: "😂", label: "Смешно" },
+    4: { emoji: "😮", label: "Удивило" },
+    5: { emoji: "😢", label: "Грустно" },
+    6: { emoji: "😡", label: "Злит" },
+};
 
-        if (Array.isArray(apiPosts)) {
-            setData("posts", apiPosts);
-        }
-    },
-    onResponseError: ({ error }) => {
-        console.error(error);
-    },
-});
+function pickBestPhotoUrl(
+    photo?: { sizes?: Array<{ url?: string; width?: number }> } | null,
+) {
+    const sizes = Array.isArray(photo?.sizes)
+        ? photo.sizes.filter((size) => Boolean(size?.url))
+        : [];
 
-if (!hasPosts.value) {
-    await execute();
+    if (!sizes.length) {
+        return null;
+    }
+
+    const best = sizes.reduce((currentBest, candidate) => {
+        const currentWidth = Number(currentBest.width ?? 0);
+        const candidateWidth = Number(candidate.width ?? 0);
+        return candidateWidth > currentWidth ? candidate : currentBest;
+    });
+
+    return best.url ?? null;
 }
 
-const normalizedPosts = computed<Array<PostData>>(() => {
-    const source = Array.isArray(posts.value) ? posts.value : [];
+function collectPhotoUrls(attachments: VkWallItem["attachments"] = []) {
+    return attachments
+        .filter(
+            (attachment) => attachment?.type === "photo" && attachment.photo,
+        )
+        .map((attachment) => pickBestPhotoUrl(attachment.photo))
+        .filter((url): url is string => Boolean(url));
+}
 
-    return source.map((post) => {
-        const attachmentPhoto = post.attachments?.find(
-            (item: any) => item?.type === "photo",
-        );
+function normalizeReactions(items: Array<any> = []): NormalizedReaction[] {
+    return items
+        .map((item) => {
+            const count = Number(item?.count ?? 0);
 
-        const photo = attachmentPhoto?.photo;
-        const sizes = Array.isArray(photo?.sizes) ? photo.sizes : [];
+            if (!count) {
+                return null;
+            }
 
-        const image =
-            sizes.find((size: any) => size?.width >= 800)?.url ??
-            sizes[sizes.length - 1]?.url ??
-            null;
+            const reactionId = Number(item?.reaction_id ?? item?.id ?? 0);
+            const meta = reactionMetaById[reactionId];
+            const emoji = String(item?.emoji ?? meta?.emoji ?? "✨");
+            const label = String(
+                item?.label ?? item?.name ?? meta?.label ?? emoji,
+            );
 
-        const rawText = (post.text || "").trim();
+            return {
+                id: String(item?.reaction_id ?? item?.id ?? label),
+                emoji,
+                label,
+                count,
+            };
+        })
+        .filter(Boolean) as NormalizedReaction[];
+}
 
-        let headerText = "Публикация сообщества";
+function normalizeProfileName(profile?: VkProfile | null) {
+    if (!profile) {
+        return null;
+    }
 
-        if (rawText) {
-            const firstLine = rawText.split("\n")[0] || "";
+    const fullName =
+        `${profile.first_name ?? ""} ${profile.last_name ?? ""}`.trim();
+    return fullName || profile.screen_name || null;
+}
 
-            const sentenceMatch = firstLine.match(/^[^.?!]+[.?!]?/);
+function normalizeGroupName(group?: VkGroup | null) {
+    if (!group) {
+        return null;
+    }
 
-            headerText = sentenceMatch
-                ? sentenceMatch[0].trim()
-                : firstLine.trim();
+    return group.name || group.screen_name || null;
+}
+
+function resolveAuthor(fromId: number) {
+    if (fromId < 0) {
+        const group = groupMap.value[Math.abs(fromId)];
+
+        return {
+            name: normalizeGroupName(group) || "Сообщество",
+            avatar: group?.photo_100 ?? group?.photo_50 ?? null,
+        };
+    }
+
+    const profile = profileMap.value[fromId];
+
+    return {
+        name: normalizeProfileName(profile),
+        avatar: profile?.photo_100 ?? profile?.photo_50 ?? null,
+    };
+}
+
+function normalizeHref(rawHref: string) {
+    const href = rawHref.trim();
+
+    if (/^(https?:\/\/|mailto:)/i.test(href)) {
+        return href;
+    }
+
+    if (href.startsWith("//")) {
+        return `https:${href}`;
+    }
+
+    return `https://${href.replace(/^\/+/, "")}`;
+}
+
+function parseRichText(source: string): RichTextToken[] {
+    const input = source ?? "";
+    const tokens: RichTextToken[] = [];
+    const pattern = /\[([^\]|]+)\|([^\]]+)\]|(https?:\/\/[^\s<>\]]+)|(\n)/g;
+
+    let lastIndex = 0;
+    let match: RegExpExecArray | null = null;
+
+    while ((match = pattern.exec(input)) !== null) {
+        if (match.index > lastIndex) {
+            tokens.push({
+                type: "text",
+                value: input.slice(lastIndex, match.index),
+            });
         }
+
+        if (match[4]) {
+            tokens.push({ type: "newline" });
+        } else if (match[1] && match[2]) {
+            tokens.push({
+                type: "link",
+                href: normalizeHref(match[1]),
+                label: match[2],
+            });
+        } else if (match[3]) {
+            tokens.push({
+                type: "link",
+                href: normalizeHref(match[3]),
+                label: match[3],
+            });
+        }
+
+        lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < input.length) {
+        tokens.push({
+            type: "text",
+            value: input.slice(lastIndex),
+        });
+    }
+
+    return tokens;
+}
+
+function toPlainText(source: string) {
+    return parseRichText(source)
+        .map((token) => {
+            if (token.type === "link") {
+                return token.label;
+            }
+
+            if (token.type === "newline") {
+                return "\n";
+            }
+
+            return token.value;
+        })
+        .join("");
+}
+
+function extractHeaderText(source: string) {
+    const plain = toPlainText(source).trim();
+
+    if (!plain) {
+        return "Публикация сообщества";
+    }
+
+    const firstLine = plain.split("\n")[0]?.trim() || "";
+    const sentenceMatch = firstLine.match(/^[^.?!]+[.?!]?/u);
+
+    return (sentenceMatch?.[0] ?? firstLine).trim() || "Публикация сообщества";
+}
+
+function ingestResponse(payload: VkWallResponse | null, reset = false) {
+    const response = payload?.response;
+
+    if (!response) {
+        return;
+    }
+
+    if (typeof response.count === "number") {
+        totalAvailable.value = response.count;
+    }
+
+    for (const profile of response.profiles ?? []) {
+        profileMap.value[profile.id] = profile;
+    }
+
+    for (const group of response.groups ?? []) {
+        groupMap.value[group.id] = group;
+    }
+
+    const currentPosts = reset ? [] : [...loadedPosts.value];
+    const existingIds = new Set(currentPosts.map((post) => post.id));
+
+    for (const item of response.items ?? []) {
+        if (!existingIds.has(item.id)) {
+            currentPosts.push(item);
+            existingIds.add(item.id);
+        }
+    }
+
+    currentPosts.sort((a, b) => Number(b.date ?? 0) - Number(a.date ?? 0));
+    loadedPosts.value = currentPosts;
+}
+
+const {
+    data: initialResponse,
+    pending: initialPending,
+    error: initialError,
+    refresh: refreshInitial,
+} = await useAsyncData<VkWallResponse | null>(
+    "vk-feed-initial",
+    () =>
+        $fetch<VkWallResponse>("/api/vk", {
+            query: {
+                count: PAGE_SIZE,
+                offset: 0,
+            },
+        }),
+    {
+        default: () => null,
+    },
+);
+
+if (initialResponse.value) {
+    ingestResponse(initialResponse.value, true);
+}
+
+const normalizedPosts = computed<PostData[]>(() =>
+    loadedPosts.value.map((post) => {
+        const author = resolveAuthor(post.from_id);
+        const photoUrls = collectPhotoUrls(post.attachments ?? []);
+        const reactions = normalizeReactions(post.reactions?.items ?? []);
 
         return {
             id: post.id,
-
-            headerText,
-            text: rawText,
-
-            author: post.from_id
-                ? `Автор ${Math.abs(post.from_id)}`
-                : "Сообщество",
-
+            ownerId: post.owner_id,
+            headerText: extractHeaderText(post.text ?? ""),
+            text: post.text?.trim() ?? "",
+            attachments: post.attachments ?? [],
+            photoUrls,
+            image: photoUrls[0] ?? null,
             date: new Date(Number(post.date) * 1000).toLocaleString("ru-RU", {
                 day: "2-digit",
                 month: "long",
@@ -339,26 +531,131 @@ const normalizedPosts = computed<Array<PostData>>(() => {
                 hour: "2-digit",
                 minute: "2-digit",
             }),
-
-            image,
-            attachments: post.attachments,
-
-            likes: post.likes.count,
-            comments: post.comments.count,
-            views: post.views.count,
-            reposts: post.reposts.count,
+            author: author.name,
+            authorAvatar: author.avatar,
+            likes: Number(post.likes?.count ?? 0),
+            comments: Number(post.comments?.count ?? 0),
+            views: Number(post.views?.count ?? 0),
+            reposts: Number(post.reposts?.count ?? 0),
+            reactions,
         };
-    });
+    }),
+);
+
+const hasMore = computed(() => {
+    if (totalAvailable.value == null) {
+        return true;
+    }
+
+    return loadedPosts.value.length < totalAvailable.value;
 });
 
-const refreshPosts = async () => {
-    if (pending.value || refreshing.value) return;
+const combinedError = computed(() => {
+    const initialMessage = initialError.value
+        ? String(initialError.value.message || initialError.value)
+        : "";
+
+    return loadError.value || initialMessage;
+});
+
+async function loadMorePosts() {
+    if (loadingMore.value || refreshing.value || !hasMore.value) {
+        return;
+    }
+
+    loadingMore.value = true;
+    loadError.value = "";
+
+    try {
+        const response = await $fetch<VkWallResponse>("/api/vk", {
+            query: {
+                count: PAGE_SIZE,
+                offset: loadedPosts.value.length,
+            },
+        });
+
+        ingestResponse(response, false);
+    } catch (error) {
+        loadError.value =
+            error instanceof Error
+                ? error.message
+                : "Не удалось подгрузить публикации";
+    } finally {
+        loadingMore.value = false;
+    }
+}
+
+async function refreshPosts() {
+    if (refreshing.value) {
+        return;
+    }
 
     refreshing.value = true;
+    loadError.value = "";
+
     try {
-        await execute();
+        loadedPosts.value = [];
+        totalAvailable.value = null;
+        profileMap.value = {};
+        groupMap.value = {};
+
+        await refreshInitial();
+
+        if (initialResponse.value) {
+            ingestResponse(initialResponse.value, true);
+        }
+    } catch (error) {
+        loadError.value =
+            error instanceof Error
+                ? error.message
+                : "Не удалось обновить ленту";
     } finally {
         refreshing.value = false;
     }
-};
+}
+
+let observer: IntersectionObserver | null = null;
+
+onMounted(async () => {
+    if (typeof window === "undefined") {
+        return;
+    }
+
+    observer = new IntersectionObserver(
+        (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+                void loadMorePosts();
+            }
+        },
+        {
+            rootMargin: "900px 0px 900px 0px",
+            threshold: 0.01,
+        },
+    );
+
+    await nextTick();
+
+    if (moreSentinel.value) {
+        observer.observe(moreSentinel.value);
+    }
+});
+
+watch(moreSentinel, (current, previous) => {
+    if (!observer) {
+        return;
+    }
+
+    if (previous) {
+        observer.unobserve(previous);
+    }
+
+    if (current) {
+        observer.observe(current);
+    }
+});
+
+onBeforeUnmount(() => {
+    observer?.disconnect();
+    observer = null;
+});
 </script>

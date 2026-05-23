@@ -30,5 +30,10 @@ export default defineNuxtConfig({
             include: ["@vue/devtools-core", "@vue/devtools-kit", "zod"],
         },
     },
-    runtimeConfig: { sessionPassword: process.env.NUXT_SESSION_PASSWORD },
+    runtimeConfig: {
+        sessionPassword: process.env.NUXT_SESSION_PASSWORD,
+        databaseUrl: process.env.NUXT_DATABASE_URL,
+        vkToken: process.env.NUXT_VK_TOKEN,
+        groupOwnerId: process.env.NUXT_GROUP_OWNER_ID,
+    },
 });
