@@ -29,7 +29,6 @@
                                 class="mt-3 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg"
                             >
                                 Поиск по имени, ФИО, группе, кафедре и роли.
-                                Карточки ведут в персональный профиль.
                             </p>
                         </div>
                     </div>

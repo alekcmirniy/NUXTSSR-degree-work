@@ -395,7 +395,7 @@
                                     </UButton>
                                     <UButton
                                         class="ui-btn ui-btn-secondary"
-                                        to="/login"
+                                        to="/login?mode=register"
                                         color="neutral"
                                         variant="soft"
                                         size="lg"
@@ -550,8 +550,9 @@ const profileEmail = computed(() => {
 });
 
 const profileRole = computed(() => {
-    const current = user.value as Record<string, any> | null;
-    return current?.role || "Участник";
+    console.log(user.value);
+    const current = user.value;
+    return current?.role === "teacher" ? "Преподаватель" : "Студент";
 });
 
 const displayName = computed(() => {

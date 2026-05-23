@@ -187,7 +187,7 @@
                                 href="mailto:your-email@example.com"
                                 class="transition hover:text-cyan-300"
                             >
-                                your-email@example.com
+                                alekcmirniy@bk.ru
                             </a>
                         </div>
 
@@ -198,7 +198,7 @@
                                 target="_blank"
                                 class="transition hover:text-cyan-300"
                             >
-                                @yourusername
+                                @m1rn1yy
                             </a>
                         </div>
 
@@ -209,19 +209,9 @@
                                 target="_blank"
                                 class="transition hover:text-cyan-300"
                             >
-                                github.com/yourusername
+                                github.com/alekcmirniy
                             </a>
                         </div>
-                    </div>
-
-                    <div
-                        class="mt-8 rounded-2xl border border-cyan-400/10 bg-cyan-400/5 p-4"
-                    >
-                        <p class="text-sm leading-7 text-slate-300">
-                            В production-версии здесь могут располагаться
-                            контакты команды, техническая поддержка, FAQ и
-                            ссылки на внутренние университетские сервисы.
-                        </p>
                     </div>
                 </aside>
             </section>

@@ -31,6 +31,8 @@ const timeLabel = computed(() =>
     new Date(props.message.createdAt).toLocaleString("ru-RU", {
         hour: "2-digit",
         minute: "2-digit",
+        day: "numeric",
+        month: "long",
     }),
 );
 </script>

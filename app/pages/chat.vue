@@ -55,7 +55,7 @@
             </section>
 
             <section
-                class="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 shadow-2xl shadow-black/20"
+                class="max-h-[700px] overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 shadow-2xl shadow-black/20"
             >
                 <div v-if="selectedConversation" class="flex h-full flex-col">
                     <div class="border-b border-white/10 p-5">

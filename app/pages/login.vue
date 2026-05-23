@@ -1,4 +1,3 @@
-<!-- pages/login.vue -->
 <template>
     <div class="w-full px-4 py-8 lg:px-8">
         <section
@@ -183,8 +182,11 @@
 <script setup lang="ts">
 type AvailableForm = "login" | "register";
 
-const currentForm = ref<AvailableForm>("login");
+const route = useRoute();
 
+const currentForm = ref<AvailableForm>(
+    route.query.mode === "register" ? "register" : "login",
+);
 function setForm(newVal: AvailableForm): void {
     if (currentForm.value === newVal) return;
     currentForm.value = newVal;
