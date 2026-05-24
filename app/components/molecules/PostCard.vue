@@ -123,22 +123,43 @@
                         <span>{{ postData.views }}</span>
                     </div>
                 </div>
-
-                <div
-                    v-if="postData.reactions.length"
-                    class="flex flex-wrap gap-2"
-                >
-                    <span
-                        v-for="reaction in postData.reactions"
-                        :key="reaction.id"
-                        class="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-2 text-xs text-slate-200"
+                <div class="flex gap-2">
+                    <div
+                        v-if="postData.reactions.length"
+                        class="flex flex-wrap gap-2"
                     >
-                        <span>{{ reaction.emoji }}</span>
-                        <span>{{ reaction.count }}</span>
-                    </span>
+                        <span
+                            v-for="reaction in postData.reactions"
+                            :key="reaction.id"
+                            class="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-2 text-xs text-slate-200"
+                        >
+                            <span>{{ reaction.emoji }}</span>
+                            <span>{{ reaction.count }}</span>
+                        </span>
+                    </div>
+                    <button
+                        type="button"
+                        class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                        :class="
+                            favoriteState
+                                ? 'bg-amber-400/15 text-amber-200 hover:bg-amber-400/20'
+                                : 'bg-white/10 text-slate-100 hover:bg-white/15'
+                        "
+                        :title="
+                            favoriteState
+                                ? 'Убрать из избранного'
+                                : 'Добавить в избранное'
+                        "
+                        :aria-pressed="favoriteState"
+                        @click="onToggleFavorite"
+                    >
+                        <UIcon name="i-lucide-star" />
+                        <span>{{
+                            favoriteState ? "В избранном" : "Избранное"
+                        }}</span>
+                    </button>
                 </div>
             </div>
-
             <div v-if="commentsOpen" class="mt-5 border-t border-white/10 pt-4">
                 <div v-if="commentsLoading" class="space-y-3">
                     <div
@@ -252,6 +273,22 @@ const props = defineProps<{
     postData: PostData;
 }>();
 
+const emit = defineEmits<{
+    (e: "favorite-toggle", payload: PostData): void;
+}>();
+
+const { isFavorite: checkIsFavorite } = useFavorites();
+
+const favoriteState = computed(() =>
+    checkIsFavorite({
+        source: "vk",
+        ownerId: props.postData.ownerId,
+        postId: props.postData.id,
+    }),
+);
+function onToggleFavorite() {
+    emit("favorite-toggle", props.postData);
+}
 const commentsOpen = ref(false);
 const commentsLoaded = ref(false);
 const commentsLoading = ref(false);

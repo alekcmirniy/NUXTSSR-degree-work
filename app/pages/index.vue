@@ -159,6 +159,7 @@
                                 v-for="post in normalizedPosts"
                                 :key="`${post.ownerId}:${post.id}`"
                                 :post-data="post"
+                                @favorite-toggle="handleFavoriteToggle"
                             />
                         </div>
 
@@ -261,6 +262,8 @@ const refreshing = ref(false);
 const loadError = ref("");
 const moreSentinel = ref<HTMLElement | null>(null);
 
+const { refreshFavorites, toggleFavorite, isFavorite } = useFavorites();
+
 type RichTextToken =
     | { type: "text"; value: string }
     | { type: "link"; href: string; label: string }
@@ -274,7 +277,19 @@ const reactionMetaById: Record<number, { emoji: string; label: string }> = {
     5: { emoji: "😢", label: "Грустно" },
     6: { emoji: "😡", label: "Злит" },
 };
-
+async function handleFavoriteToggle(post: PostData) {
+    await toggleFavorite({
+        source: "vk",
+        ownerId: post.ownerId,
+        postId: post.id,
+        title: post.headerText,
+        text: post.text,
+        author: post.author || null,
+        authorAvatar: post.authorAvatar || null,
+        coverImage: post.photoUrls?.[0] || null,
+        postDate: post.date || null,
+    });
+}
 function pickBestPhotoUrl(
     photo?: { sizes?: Array<{ url?: string; width?: number }> } | null,
 ) {
@@ -617,6 +632,8 @@ async function refreshPosts() {
 let observer: IntersectionObserver | null = null;
 
 onMounted(async () => {
+    await refreshFavorites();
+
     if (typeof window === "undefined") {
         return;
     }

@@ -117,7 +117,7 @@
                 </section>
 
                 <section class="mt-6 grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
-                    <div class="space-y-6">
+                    <div class="min-w-0 space-y-6">
                         <UCard
                             class="border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur"
                         >
@@ -175,49 +175,115 @@
                             class="border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur"
                         >
                             <template #header>
-                                <div>
-                                    <h2
-                                        class="text-lg font-semibold text-white"
-                                    >
-                                        Недавняя активность
-                                    </h2>
-                                    <p class="mt-1 text-sm text-slate-400">
-                                        Несколько блоков, которые делают
-                                        страницу живой и не пустой.
-                                    </p>
+                                <div
+                                    class="flex items-center justify-between gap-3"
+                                >
+                                    <div>
+                                        <h2
+                                            class="text-lg font-semibold text-white"
+                                        >
+                                            Избранное
+                                        </h2>
+                                        <p class="mt-1 text-sm text-slate-400">
+                                            Отмеченные посты можно пролистать и
+                                            открыть позже.
+                                        </p>
+                                    </div>
                                 </div>
                             </template>
 
-                            <div class="space-y-4">
+                            <div v-if="favoritesLoading" class="space-y-3">
                                 <div
-                                    v-for="item in activityFeed"
-                                    :key="item.title"
-                                    class="flex items-start gap-3 rounded-2xl bg-black/20 p-4"
+                                    class="h-24 animate-pulse rounded-2xl bg-white/5"
+                                />
+                                <div
+                                    class="h-24 animate-pulse rounded-2xl bg-white/5"
+                                />
+                            </div>
+
+                            <div
+                                v-else-if="!favorites.length"
+                                class="rounded-2xl bg-black/20 p-4 text-sm text-slate-400"
+                            >
+                                Пока нет избранных постов. Нажми на звёздочку у
+                                поста на главной странице.
+                            </div>
+
+                            <div
+                                v-else
+                                class="w-full max-w-full overflow-x-auto overflow-y-hidden"
+                            >
+                                <div
+                                    class="flex w-max min-w-full gap-4 pb-2 snap-x snap-mandatory"
                                 >
-                                    <div
-                                        class="mt-0.5 rounded-full bg-white/10 p-2"
+                                    <article
+                                        v-for="item in favorites"
+                                        :key="item.id"
+                                        class="shrink-0 min-w-[280px] max-w-[320px] snap-start rounded-3xl border border-white/10 bg-black/20 p-4"
                                     >
-                                        <UIcon
-                                            :name="item.icon"
-                                            class="text-cyan-300"
-                                        />
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-white">
-                                            {{ item.title }}
-                                        </p>
-                                        <p
-                                            class="mt-1 text-sm leading-6 text-slate-300"
+                                        <div
+                                            v-if="item.coverImage"
+                                            class="mb-4 overflow-hidden rounded-2xl bg-white/5"
                                         >
-                                            {{ item.description }}
-                                        </p>
-                                    </div>
+                                            <img
+                                                :src="item.coverImage"
+                                                :alt="item.title"
+                                                class="h-36 w-full object-cover"
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                        </div>
+
+                                        <div class="space-y-2">
+                                            <h3
+                                                class="line-clamp-2 text-base font-semibold text-white"
+                                            >
+                                                {{ item.title }}
+                                            </h3>
+
+                                            <p
+                                                v-if="item.author"
+                                                class="text-xs text-slate-400"
+                                            >
+                                                {{ item.author }}
+                                            </p>
+
+                                            <p
+                                                class="line-clamp-4 text-sm leading-6 text-slate-300"
+                                            >
+                                                {{ item.text || "Без текста" }}
+                                            </p>
+                                        </div>
+
+                                        <div
+                                            class="mt-4 flex items-center justify-between gap-3"
+                                        >
+                                            <span
+                                                class="text-xs text-slate-500"
+                                            >
+                                                {{
+                                                    item.postDate || "Без даты"
+                                                }}
+                                            </span>
+
+                                            <UButton
+                                                :to="getFavoriteUrl(item)"
+                                                target="_blank"
+                                                rel="noreferrer noopener"
+                                                size="xs"
+                                                color="neutral"
+                                                variant="soft"
+                                            >
+                                                Открыть
+                                            </UButton>
+                                        </div>
+                                    </article>
                                 </div>
                             </div>
                         </UCard>
                     </div>
 
-                    <aside class="space-y-6">
+                    <aside class="min-w-0 space-y-6">
                         <UCard
                             class="border-white/10 bg-white/5 shadow-lg shadow-black/10 backdrop-blur"
                         >
@@ -494,6 +560,12 @@ const group = ref("");
 
 const profilePhoto = ref("");
 
+const {
+    favorites,
+    refreshFavorites,
+    loading: favoritesLoading,
+} = useFavorites();
+
 const activityFeed = [
     {
         icon: "i-lucide-pencil-line",
@@ -633,5 +705,14 @@ async function saveProfile() {
 
 onMounted(async () => {
     await loadProfile();
+    await refreshFavorites();
 });
+
+function getFavoriteUrl(item: FavoritePost) {
+    if (item.source === "vk") {
+        return `https://vk.com/wall${item.ownerId}_${item.postId}`;
+    }
+
+    return "#";
+}
 </script>

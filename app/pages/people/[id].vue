@@ -18,7 +18,7 @@
                     <div class="p-6 lg:p-8">
                         <div class="flex items-start gap-4">
                             <div
-                                class="h-24 w-24 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
+                                class="h-24 w-48 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
                             >
                                 <img
                                     v-if="person.avatarUrl"
@@ -48,7 +48,7 @@
                                 </h1>
                                 <p class="text-sm text-slate-400">
                                     {{
-                                        person.department ||
+                                        "Кафедра " + person.department ||
                                         "Кафедра не указана"
                                     }}
                                 </p>

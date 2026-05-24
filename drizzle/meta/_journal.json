@@ -8,6 +8,13 @@
       "when": 1779648382223,
       "tag": "0000_flaky_kate_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1779653223812,
+      "tag": "0001_bored_christian_walker",
+      "breakpoints": true
     }
   ]
 }
