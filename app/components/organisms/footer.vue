@@ -13,21 +13,16 @@
                 </div>
 
                 <div>
-                    <p class="font-medium text-slate-200">NuxtSSR Platform</p>
+                    <p class="font-medium text-slate-200">
+                        Социальная площадка
+                    </p>
                     <p class="text-xs text-slate-500">
                         Пространство для общения и публикаций
                     </p>
                 </div>
             </div>
 
-            <div
-                class="flex flex-wrap items-center gap-3 text-xs text-slate-500"
-            >
-                <span>SSR</span>
-                <span>Nuxt 4</span>
-                <span>Vue 3</span>
-                <span>Drizzle ORM</span>
-            </div>
+            <p>Под разработкой: Мирошниченко Алексей Владимирович 2251</p>
         </div>
     </footer>
 </template>

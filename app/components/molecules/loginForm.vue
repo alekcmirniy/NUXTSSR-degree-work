@@ -26,13 +26,6 @@
             />
         </UFormField>
 
-        <div
-            class="flex items-center justify-between gap-3 text-sm text-slate-400"
-        >
-            <span>Используйте данные своего аккаунта</span>
-            <span class="text-slate-500">Без лишних шагов</span>
-        </div>
-
         <UButton
             type="submit"
             color="primary"

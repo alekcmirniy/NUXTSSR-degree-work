@@ -78,13 +78,6 @@
             </UFormField>
         </div>
 
-        <div
-            class="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-slate-300"
-        >
-            После регистрации профиль можно сразу дополнить фото, описанием и
-            личной подписью.
-        </div>
-
         <UButton
             type="submit"
             color="primary"

@@ -32,14 +32,15 @@
                             <p
                                 class="max-w-xl text-base leading-7 text-slate-300 sm:text-lg"
                             >
-                                Один аккаунт открывает доступ к ленте, профилю,
-                                чату и всему остальному пространству платформы.
+                                Аккаунт открывает доступ к ленте, профилю, чату
+                                и остальному пространству платформы.
                             </p>
                         </div>
 
                         <div class="grid gap-3 sm:grid-cols-2">
                             <div
-                                class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+                                class="cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+                                @click="setForm('login')"
                             >
                                 <div class="text-sm text-slate-400">
                                     Быстрый вход
@@ -50,7 +51,8 @@
                                 </div>
                             </div>
                             <div
-                                class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+                                class="cursor-pointer rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+                                @click="setForm('register')"
                             >
                                 <div class="text-sm text-slate-400">
                                     Новый профиль
@@ -69,30 +71,21 @@
                                 name="i-lucide-shield-check"
                                 class="mt-0.5 text-cyan-300"
                             />
-                            <span
-                                >Аккуратная форма входа без лишних
-                                деталей.</span
-                            >
+                            <span>Участвуйте</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <UIcon
                                 name="i-lucide-user-round-plus"
                                 class="mt-0.5 text-indigo-300"
                             />
-                            <span
-                                >Регистрация с понятной структурой и полями
-                                профиля.</span
-                            >
+                            <span>Общайтесь</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <UIcon
                                 name="i-lucide-sparkles"
                                 class="mt-0.5 text-fuchsia-300"
                             />
-                            <span
-                                >Интерфейс в едином тёмном стиле
-                                платформы.</span
-                            >
+                            <span>Делитесь</span>
                         </div>
                     </div>
                 </div>
@@ -121,7 +114,9 @@
                                 </p>
                             </div>
 
-                            <div class="rounded-full bg-black/20 p-1">
+                            <div
+                                class="flex gap-4 rounded-full bg-black/20 p-1"
+                            >
                                 <UButton
                                     size="sm"
                                     class="ui-btn ui-btn-secondary"
