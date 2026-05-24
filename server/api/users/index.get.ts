@@ -2,7 +2,6 @@ import { eq, like, or, and } from "drizzle-orm";
 import { z } from "zod";
 
 import { usersTable } from "~~/server/db/usersSchema";
-import { demoUsers } from "~~/server/utils/demo-users";
 import type { UserPreview } from "~/utils/interfaces/users";
 
 const querySchema = z.object({
@@ -55,13 +54,6 @@ export default defineEventHandler(async (event) => {
 
     const q = parsed.data;
 
-    // Если таблица пользователей ещё пустая, отдаём демо-данные.
-    const rows = await db.select().from(usersTable).all();
-
-    if (!rows.length) {
-        return demoUsers.filter((user) => matchesDemoUser(user, q));
-    }
-
     const filters = [] as any[];
 
     if (q.role) filters.push(eq(usersTable.role, q.role));
@@ -71,7 +63,7 @@ export default defineEventHandler(async (event) => {
 
     const search = q.search;
 
-    const result = await db
+    const result = db
         .select({
             id: usersTable.id,
             name: usersTable.name,

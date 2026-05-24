@@ -9,4 +9,4 @@ export function useDrizzle() {
     return db;
 }
 
-export type User = typeof schema.usersTable.$inferSelect;
+// export type User = typeof schema.usersTable.$inferSelect;

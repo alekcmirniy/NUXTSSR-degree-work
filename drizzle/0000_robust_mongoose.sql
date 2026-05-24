@@ -42,8 +42,10 @@ CREATE TABLE `users` (
 	`department` text,
 	`bio` text,
 	`avatar_url` text,
-	`created_at` integer DEFAULT '"2026-05-17T10:35:02.407Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2026-05-17T10:35:02.408Z"' NOT NULL
+	`headline` text,
+	`location` text,
+	`created_at` integer DEFAULT '"2026-05-24T15:57:43.467Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2026-05-24T15:57:43.467Z"' NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);

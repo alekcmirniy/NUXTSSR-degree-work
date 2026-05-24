@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import { usersTable } from "~~/server/db/usersSchema";
-import { demoUsers } from "~~/server/utils/demo-users";
 
 export default defineEventHandler(async (event) => {
     const db = useDrizzle();
@@ -13,7 +12,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    const row = await db
+    const row = db
         .select({
             id: usersTable.id,
             email: usersTable.email,
@@ -43,23 +42,4 @@ export default defineEventHandler(async (event) => {
             ).toISOString(),
         };
     }
-
-    const demo = demoUsers.find((user) => user.id === id);
-
-    if (!demo) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Пользователь не найден",
-        });
-    }
-
-    return {
-        ...demo,
-        email:
-            demo.role === "teacher"
-                ? "teacher@example.com"
-                : "student@example.com",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-    };
 });

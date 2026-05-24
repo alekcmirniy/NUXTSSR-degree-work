@@ -8,20 +8,22 @@ export default defineEventHandler(async (event) => {
     if (!formData) {
         throw createError({
             statusCode: 400,
-            statusMessage: "No file",
+            statusMessage: "Файл не найден",
         });
     }
 
     const file = formData.find((item) => item.name === "file");
 
-    if (!file || !file.data) {
+    if (!file?.data) {
         throw createError({
             statusCode: 400,
-            statusMessage: "File not found",
+            statusMessage: "Некорректный файл",
         });
     }
 
-    const fileName = `${randomUUID()}.png`;
+    const extension = path.extname(file.filename || "").toLowerCase() || ".png";
+
+    const fileName = `${randomUUID()}${extension}`;
 
     const uploadPath = path.join(process.cwd(), "public", "uploads", fileName);
 

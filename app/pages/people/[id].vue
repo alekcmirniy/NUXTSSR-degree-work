@@ -18,7 +18,7 @@
                     <div class="p-6 lg:p-8">
                         <div class="flex items-start gap-4">
                             <div
-                                class="h-24 w-48 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
+                                class="h-24 w-24 overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400/25 to-indigo-500/25 text-3xl font-semibold text-white"
                             >
                                 <img
                                     v-if="person.avatarUrl"
@@ -41,11 +41,7 @@
                                     size="lg"
                                     class="w-fit"
                                 >
-                                    {{
-                                        person.role === "teacher"
-                                            ? "Преподаватель"
-                                            : "Студент"
-                                    }}
+                                    {{ personRole }}
                                 </UChip>
                                 <h1 class="text-3xl font-semibold text-white">
                                     {{ fullName }}
@@ -77,9 +73,7 @@
                             </div>
                             <div class="rounded-2xl bg-black/20 px-4 py-3">
                                 Роль:
-                                <span class="text-white">{{
-                                    person.role
-                                }}</span>
+                                <span class="text-white">{{ personRole }}</span>
                             </div>
                         </div>
                     </div>
@@ -162,6 +156,10 @@ const { user } = useUserSession();
 
 const { data: person, error } = await useFetch<UserProfile>(
     `/api/users/${route.params.id}`,
+);
+
+const personRole = computed<"Студент" | "Преподаватель">(() =>
+    person.value?.role === "student" ? "Студент" : "Преподаватель",
 );
 
 const currentUserId = computed(() => Number((user.value as any)?.id));

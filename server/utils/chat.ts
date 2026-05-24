@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import type { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
-import { messagesTable } from "~~/server/db/messagesSchema";
 import { conversationsTable } from "~~/server/db/conversationsSchema";
 
 export function buildPairKey(a: number, b: number): string {

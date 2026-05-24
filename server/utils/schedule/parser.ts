@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import type { DaySchedule, LessonItem, ParsedSchedule } from "../types";
+import type { DaySchedule, ParsedSchedule } from "../types";
 
 type TimeMeta = {
     lessonNumber: string;

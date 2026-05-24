@@ -469,18 +469,30 @@
         </div>
     </div>
 </template>
-
 <script setup lang="ts">
-import type { User } from "#auth-utils";
-
 const { user, loggedIn, clear } = useUserSession();
 
-useHead({
-    title: "Профиль",
-    meta: [{ name: "description", content: "Личный профиль пользователя" }],
-});
+type ProfileResponse = {
+    id: number;
+    email: string;
+    name: string;
+    surname: string;
+    patronymic?: string | null;
+    role: "student" | "teacher";
+
+    group?: string | null;
+    department?: string | null;
+    bio?: string | null;
+    avatarUrl?: string | null;
+
+    headline?: string | null;
+    location?: string | null;
+};
 
 const saving = ref(false);
+
+const profile = ref<ProfileResponse | null>(null);
+
 const fileInput = ref<HTMLInputElement | null>(null);
 
 const aboutMe = ref("");
@@ -490,8 +502,7 @@ const profileLocation = ref("");
 const department = ref("");
 const group = ref("");
 
-const profilePhoto = ref<string>();
-const profilePhotoPreview = ref<string>();
+const profilePhoto = ref("");
 
 const profileTags = ref(["news", "community", "design", "nuxt"]);
 
@@ -517,24 +528,32 @@ const activityFeed = [
 ];
 
 const profileEmail = computed(() => {
-    const current = user.value as Record<string, any> | null;
-    return current?.email || "—";
+    return profile.value?.email || "—";
 });
 
 const profileRole = computed(() => {
     const current = user.value;
+
     return current?.role === "teacher" ? "Преподаватель" : "Студент";
 });
 
 const displayName = computed(() => {
-    const current = user.value as Record<string, any> | null;
-    const parts = [current?.surname, current?.name].filter(Boolean);
-    return parts.length ? parts.join(" ") : current?.email || "Пользователь";
+    const current = profile.value;
+
+    if (!current) {
+        return user.value?.email || "Пользователь";
+    }
+
+    const parts = [current.surname, current.name].filter(Boolean);
+
+    return parts.length ? parts.join(" ") : current.email;
 });
 
 const userInitials = computed(() => {
     const current = user.value as Record<string, any> | null;
+
     const name = displayName.value || current?.email || "U";
+
     return name
         .split(" ")
         .map((part) => part[0])
@@ -544,29 +563,49 @@ const userInitials = computed(() => {
         .toUpperCase();
 });
 
-const profileStatus = computed(() => profileHeadline.value || "Без статуса");
-const profileVisibility = computed(() => "Публичный профиль");
+const profileStatus = computed(() => {
+    return profileHeadline.value || "Без статуса";
+});
+
+const profileVisibility = computed(() => {
+    return "Публичный профиль";
+});
+
 const completion = computed(() => {
     let score = 20;
+
     if (aboutMe.value.trim()) score += 35;
     if (profileLocation.value.trim()) score += 15;
-    if (profilePhoto.value || profilePhotoPreview.value) score += 20;
+    if (profilePhoto.value) score += 20;
     if (profileHeadline.value.trim()) score += 10;
+
     return Math.min(score, 100);
 });
 
-onBeforeUnmount(() => {
-    if (profilePhotoPreview.value?.startsWith("blob:")) {
-        URL.revokeObjectURL(profilePhotoPreview.value);
-    }
-});
+async function loadProfile() {
+    profile.value = await $fetch<ProfileResponse>("/api/profile/me");
+
+    aboutMe.value = profile.value.bio ?? "";
+    department.value = profile.value.department ?? "";
+    group.value = profile.value.group ?? "";
+
+    profilePhoto.value = profile.value.avatarUrl ?? "";
+
+    profileHeadline.value =
+        profile.value.headline ?? "Открыт к общению и новым проектам";
+
+    profileLocation.value = profile.value.location ?? "";
+}
+
 async function onPhotoChange(event: Event) {
     const input = event.target as HTMLInputElement;
+
     const file = input.files?.[0];
 
     if (!file) return;
 
     const formData = new FormData();
+
     formData.append("file", file);
 
     const response = await $fetch<{ url: string }>("/api/upload", {
@@ -576,6 +615,7 @@ async function onPhotoChange(event: Event) {
 
     profilePhoto.value = response.url;
 }
+
 async function saveProfile() {
     saving.value = true;
 
@@ -583,25 +623,27 @@ async function saveProfile() {
         await $fetch("/api/profile/update", {
             method: "POST",
             body: {
-                body: {
-                    avatarUrl: profilePhoto.value,
-                    bio: aboutMe.value,
-                    department: department.value,
-                    group: group.value,
-                },
+                avatarUrl: profilePhoto.value || null,
+
+                bio: aboutMe.value || null,
+
+                department: department.value || null,
+                group: group.value || null,
+
+                headline: profileHeadline.value || null,
+                location: profileLocation.value || null,
             },
         });
+
+        await loadProfile();
+    } catch (error) {
+        console.error(error);
     } finally {
         saving.value = false;
     }
 }
 
 onMounted(async () => {
-    const profile = await $fetch<User>("/api/profile/me");
-
-    aboutMe.value = profile.bio || "";
-    department.value = profile.department || "";
-    group.value = profile.group || "";
-    profilePhoto.value = profile.avatarUrl || "";
+    await loadProfile();
 });
 </script>
