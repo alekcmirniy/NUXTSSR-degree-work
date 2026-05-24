@@ -7,6 +7,16 @@
         class="default-form space-y-5"
         @submit="onSubmit"
     >
+        <UFormField label="Фамилия" name="surname">
+            <UInput
+                v-model="formState.surname"
+                type="text"
+                autocomplete="family-name"
+                placeholder="Иванов"
+                class="w-full"
+            />
+        </UFormField>
+
         <div class="grid gap-4 md:grid-cols-2">
             <UFormField label="Имя" name="name">
                 <UInput
@@ -18,26 +28,16 @@
                 />
             </UFormField>
 
-            <UFormField label="Фамилия" name="surname">
+            <UFormField label="Отчество" name="patronymic">
                 <UInput
-                    v-model="formState.surname"
+                    v-model="formState.patronymic"
                     type="text"
-                    autocomplete="family-name"
-                    placeholder="Иванов"
+                    autocomplete="additional-name"
+                    placeholder="Иванович"
                     class="w-full"
                 />
             </UFormField>
         </div>
-
-        <UFormField label="Отчество" name="patronymic">
-            <UInput
-                v-model="formState.patronymic"
-                type="text"
-                autocomplete="additional-name"
-                placeholder="Иванович"
-                class="w-full"
-            />
-        </UFormField>
 
         <UFormField label="Почта" name="email">
             <UInput

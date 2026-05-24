@@ -168,16 +168,6 @@
                                         placeholder="Статус или подпись"
                                     />
                                 </div>
-
-                                <div class="flex flex-wrap gap-2">
-                                    <span
-                                        v-for="tag in profileTags"
-                                        :key="tag"
-                                        class="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs text-slate-200"
-                                    >
-                                        #{{ tag }}
-                                    </span>
-                                </div>
                             </div>
                         </UCard>
 
@@ -503,8 +493,6 @@ const department = ref("");
 const group = ref("");
 
 const profilePhoto = ref("");
-
-const profileTags = ref(["news", "community", "design", "nuxt"]);
 
 const activityFeed = [
     {
