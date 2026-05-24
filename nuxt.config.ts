@@ -2,6 +2,11 @@ import { defineNuxtConfig } from "nuxt/config";
 
 // nuxt.config.ts
 export default defineNuxtConfig({
+    app: {
+        head: {
+            link: [{ rel: "icon", type: "image/png", href: "/logo.png" }],
+        },
+    },
     components: {
         dirs: [
             "~/components/atoms",

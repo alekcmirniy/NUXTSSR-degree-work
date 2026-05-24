@@ -1,10 +1,10 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            DATABASE_URL: string;
-            SESSION_PASSWORD: string;
-            VK_TOKEN: string;
-            GROUP_OWNER_ID: string;
+            NUXT_DATABASE_URL: string;
+            NUXT_SESSION_PASSWORD: string;
+            NUXT_VK_TOKEN: string;
+            NUXT_GROUP_OWNER_ID: string;
         }
     }
 }
