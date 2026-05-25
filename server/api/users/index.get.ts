@@ -1,5 +1,6 @@
 import { eq, like, or, and } from "drizzle-orm";
 import { z } from "zod";
+import { db } from "~~/server/db/index";
 
 import { usersTable } from "~~/server/db/usersSchema";
 import type { UserPreview } from "~/utils/interfaces/users";
@@ -40,8 +41,6 @@ function matchesDemoUser(
 }
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
-
     const query = getQuery(event);
     const parsed = querySchema.safeParse(query);
 

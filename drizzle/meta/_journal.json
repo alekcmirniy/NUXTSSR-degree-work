@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1779648382223,
-      "tag": "0000_flaky_kate_bishop",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1779653223812,
-      "tag": "0001_bored_christian_walker",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1779735912303,
-      "tag": "0002_chunky_synch",
+      "when": 1779743490658,
+      "tag": "0000_late_wilson_fisk",
       "breakpoints": true
     }
   ]

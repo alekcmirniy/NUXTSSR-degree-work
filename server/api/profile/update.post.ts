@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { usersTable } from "~~/server/db/usersSchema";
+import { db } from "~~/server/db/index";
 
 const updateProfileSchema = z.object({
     avatarUrl: z.string().trim().nullable().optional(),
@@ -13,8 +14,6 @@ const updateProfileSchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
-
     const session = await requireUserSession(event);
 
     const rawBody = await readBody(event);

@@ -1,9 +1,9 @@
 import { usersTable } from "~~/server/db/usersSchema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
     const body = await readBody(event);
 
     const { email, password } = body;

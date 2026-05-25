@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { usersTable } from "~~/server/db/usersSchema";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async () => {
     if (process.env.NODE_ENV === "production") {
@@ -9,7 +10,6 @@ export default defineEventHandler(async () => {
         });
     }
 
-    const db = useDrizzle();
     const passwordHash = await bcrypt.hash("demo12345", 10);
 
     const demoRows = [

@@ -3,6 +3,7 @@ import { messagesTable } from "~~/server/db/messagesSchema";
 import { conversationsTable } from "~~/server/db/conversationsSchema";
 import { usersTable } from "~~/server/db/usersSchema";
 import type { ConversationPreview } from "~/utils/interfaces/chat";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async (event) => {
     const { user } = await requireUserSession(event);
@@ -14,8 +15,6 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Сессия не содержит пользователя",
         });
     }
-
-    const db = useDrizzle();
 
     const conversations = db
         .select()

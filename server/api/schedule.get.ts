@@ -5,8 +5,7 @@ import { scheduleCache } from "~~/server/db/scheduleSchema";
 
 import { getInternalGroupId } from "~~/server/utils/schedule/group-map";
 import { parseSchedule } from "~~/server/utils/schedule/parser";
-
-const db = useDrizzle();
+import { db } from "~~/server/db/index";
 
 const querySchema = z.object({
     group: z.string().trim().min(1, "Введите номер группы"),

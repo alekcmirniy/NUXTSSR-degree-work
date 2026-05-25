@@ -1,9 +1,9 @@
 import { desc, eq } from "drizzle-orm";
+import { db } from "~~/server/db/index";
 
 import { userFavoritesTable } from "~~/server/db/favoritesSchema";
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
     const session = await requireUserSession(event);
 
     const rows = db

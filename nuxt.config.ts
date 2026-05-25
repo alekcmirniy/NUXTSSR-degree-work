@@ -1,36 +1,56 @@
-import { defineNuxtConfig } from "nuxt/config";
 import tailwindcss from "@tailwindcss/vite";
+import { defineNuxtConfig } from "nuxt/config";
 
-// nuxt.config.ts
 export default defineNuxtConfig({
+    compatibilityDate: "2025-07-15",
+
+    devtools: {
+        enabled: true,
+    },
+
+    ssr: true,
+
     app: {
         head: {
-            link: [{ rel: "icon", type: "image/png", href: "/logo.png" }],
+            link: [
+                {
+                    rel: "icon",
+                    type: "image/png",
+                    href: "/logo.png",
+                },
+            ],
         },
     },
+
+    modules: ["@pinia/nuxt", "@nuxt/fonts", "nuxt-auth-utils", "@nuxt/ui"],
+
+    css: ["~/assets/css/main.css"],
+
+    vite: {
+        plugins: [tailwindcss()],
+        optimizeDeps: {
+            include: [
+                "@vue/devtools-core",
+                "@vue/devtools-kit",
+                "web-vitals/attribution",
+            ],
+        },
+    },
+
     components: {
         dirs: [
             "~/components/atoms",
-            "~/components/organisms",
             "~/components/molecules",
+            "~/components/organisms",
         ],
     },
-    compatibilityDate: "2025-07-15",
-    devtools: { enabled: true },
-    ssr: true,
-    modules: ["@pinia/nuxt", "@nuxt/fonts", "nuxt-auth-utils", "@nuxt/ui"],
+
     typescript: {
         strict: true,
-        typeCheck: false,
         shim: true,
+        typeCheck: false,
     },
-    css: ["~/assets/css/main.scss"],
-    vite: {
-        optimizeDeps: {
-            include: ["@vue/devtools-core", "@vue/devtools-kit", "zod"],
-        },
-        plugins: [tailwindcss()],
-    },
+
     runtimeConfig: {
         sessionPassword: process.env.NUXT_SESSION_PASSWORD,
         databaseUrl: process.env.NUXT_DATABASE_URL,

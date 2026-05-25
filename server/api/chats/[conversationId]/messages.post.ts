@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { messagesTable } from "~~/server/db/messagesSchema";
 import { conversationsTable } from "~~/server/db/conversationsSchema";
+import { db } from "~~/server/db/index";
 
 const schema = z.object({
     content: z
@@ -34,7 +35,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    const db = useDrizzle();
     const conversation = db
         .select()
         .from(conversationsTable)

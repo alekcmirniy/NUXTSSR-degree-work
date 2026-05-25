@@ -1,6 +1,7 @@
 import { and, eq, isNull, ne } from "drizzle-orm";
 import { messagesTable } from "~~/server/db/messagesSchema";
 import { conversationsTable } from "~~/server/db/conversationsSchema";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async (event) => {
     const { user } = await requireUserSession(event);
@@ -14,7 +15,6 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    const db = useDrizzle();
     const conversation = db
         .select()
         .from(conversationsTable)

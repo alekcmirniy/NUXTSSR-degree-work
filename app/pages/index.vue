@@ -64,7 +64,7 @@
                         class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1"
                     >
                         <div
-                            class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
+                            class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm"
                         >
                             <div
                                 class="flex items-center justify-between text-sm text-slate-300"
@@ -171,7 +171,7 @@
 
                 <aside class="space-y-4">
                     <section
-                        class="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/10 backdrop-blur"
+                        class="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/10 backdrop-blur-sm"
                     >
                         <h3 class="text-lg font-semibold text-white">
                             Что уже есть на платформе
@@ -183,7 +183,7 @@
                             >
                                 <UIcon
                                     name="i-lucide-newspaper"
-                                    class="size-8 mt-0.5 text-cyan-300"
+                                    class="mt-0.5 size-8 text-cyan-300"
                                 />
                                 <div>
                                     <div class="font-medium text-white">
@@ -202,7 +202,7 @@
                             >
                                 <UIcon
                                     name="i-lucide-message-circle-more"
-                                    class="size-6 mt-0.5 text-cyan-300"
+                                    class="mt-0.5 size-6 text-cyan-300"
                                 />
                                 <div>
                                     <div class="font-medium text-white">

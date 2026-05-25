@@ -1,9 +1,9 @@
 import { eq, desc } from "drizzle-orm";
 import { messagesTable } from "~~/server/db/messagesSchema";
-import { conversationsTable } from "~~/server/db/conversationsSchema";
 import { usersTable } from "~~/server/db/usersSchema";
 import { ensureConversation } from "~~/server/utils/chat";
 import type { ChatThreadResponse } from "~/utils/interfaces/chat";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async (event) => {
     const { user } = await requireUserSession(event);
@@ -23,8 +23,6 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Нельзя открыть диалог с самим собой",
         });
     }
-
-    const db = useDrizzle();
 
     const counterpart = db
         .select({

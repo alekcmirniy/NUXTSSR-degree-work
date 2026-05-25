@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { vitals } from "~~/server/db/vitalsSchema";
+import { db } from "~~/server/db/index";
 
 const Schema = z.object({
     id: z.string(),
@@ -15,7 +16,6 @@ const Schema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
     const body = Schema.parse(await readBody(event));
 
     await db.insert(vitals).values({

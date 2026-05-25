@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
+import { db } from "~~/server/db/index";
 
 import { userFavoritesTable } from "~~/server/db/favoritesSchema";
 
@@ -16,7 +17,6 @@ const favoriteSchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
     const session = await requireUserSession(event);
 
     const body = favoriteSchema.parse(await readBody(event));

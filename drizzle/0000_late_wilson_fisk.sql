@@ -44,8 +44,36 @@ CREATE TABLE `users` (
 	`avatar_url` text,
 	`headline` text,
 	`location` text,
-	`created_at` integer DEFAULT '"2026-05-24T18:46:22.154Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2026-05-24T18:46:22.155Z"' NOT NULL
+	`created_at` integer DEFAULT '"2026-05-25T21:11:30.622Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2026-05-25T21:11:30.622Z"' NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);
+CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
+CREATE TABLE `user_favorites` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`user_id` integer NOT NULL,
+	`source` text DEFAULT 'vk' NOT NULL,
+	`owner_id` integer NOT NULL,
+	`post_id` integer NOT NULL,
+	`title` text NOT NULL,
+	`text` text,
+	`author` text,
+	`author_avatar` text,
+	`cover_image` text,
+	`post_date` text,
+	`created_at` integer DEFAULT '"2026-05-25T21:11:30.640Z"' NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `user_favorite_unique` ON `user_favorites` (`user_id`,`source`,`owner_id`,`post_id`);--> statement-breakpoint
+CREATE TABLE `vitals` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`created_at` integer NOT NULL,
+	`build` text NOT NULL,
+	`pathname` text NOT NULL,
+	`metric` text NOT NULL,
+	`value` real NOT NULL,
+	`rating` text NOT NULL,
+	`navigation_type` text,
+	`attribution` text
+);

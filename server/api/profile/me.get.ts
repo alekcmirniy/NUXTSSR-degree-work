@@ -1,10 +1,9 @@
 import { eq } from "drizzle-orm";
+import { db } from "~~/server/db/index";
 
 import { usersTable } from "~~/server/db/usersSchema";
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
-
     const session = await requireUserSession(event);
 
     const profile = db

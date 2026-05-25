@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { usersTable } from "~~/server/db/usersSchema";
+import { db } from "~~/server/db/index";
 
 export default defineEventHandler(async (event) => {
-    const db = useDrizzle();
     const id = Number(getRouterParam(event, "id"));
 
     if (!Number.isFinite(id)) {
