@@ -15,6 +15,13 @@
       "when": 1779653223812,
       "tag": "0001_bored_christian_walker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1779735912303,
+      "tag": "0002_chunky_synch",
+      "breakpoints": true
     }
   ]
 }

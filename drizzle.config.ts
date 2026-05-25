@@ -8,6 +8,7 @@ export default defineConfig({
         "./server/db/scheduleSchema.ts",
         "./server/db/usersSchema.ts",
         "./server/db/favoritesSchema.ts",
+        "./server/db/vitalsSchema.ts",
     ],
     out: "./drizzle",
     dialect: "sqlite",
