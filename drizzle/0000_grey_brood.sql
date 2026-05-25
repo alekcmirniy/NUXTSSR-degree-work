@@ -44,8 +44,8 @@ CREATE TABLE `users` (
 	`avatar_url` text,
 	`headline` text,
 	`location` text,
-	`created_at` integer DEFAULT '"2026-05-25T21:11:30.622Z"' NOT NULL,
-	`updated_at` integer DEFAULT '"2026-05-25T21:11:30.622Z"' NOT NULL
+	`created_at` integer DEFAULT '"2026-05-25T21:30:53.956Z"' NOT NULL,
+	`updated_at` integer DEFAULT '"2026-05-25T21:30:53.956Z"' NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
@@ -61,7 +61,7 @@ CREATE TABLE `user_favorites` (
 	`author_avatar` text,
 	`cover_image` text,
 	`post_date` text,
-	`created_at` integer DEFAULT '"2026-05-25T21:11:30.640Z"' NOT NULL,
+	`created_at` integer DEFAULT '"2026-05-25T21:30:53.979Z"' NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint

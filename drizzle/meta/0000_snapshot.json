@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "ab273c7a-28c3-4c9e-ae37-6e2b88f4b973",
+  "id": "bff024cd-2d3a-4426-a6c1-765da2528ef9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "conversations": {
@@ -327,7 +327,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2026-05-25T21:11:30.622Z\"'"
+          "default": "'\"2026-05-25T21:30:53.956Z\"'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -335,7 +335,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2026-05-25T21:11:30.622Z\"'"
+          "default": "'\"2026-05-25T21:30:53.956Z\"'"
         }
       },
       "indexes": {
@@ -439,7 +439,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2026-05-25T21:11:30.640Z\"'"
+          "default": "'\"2026-05-25T21:30:53.979Z\"'"
         }
       },
       "indexes": {
