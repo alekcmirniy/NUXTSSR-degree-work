@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from "nuxt/config";
+import tailwindcss from "@tailwindcss/vite";
 
 // nuxt.config.ts
 export default defineNuxtConfig({
@@ -17,13 +18,7 @@ export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: { enabled: true },
     ssr: true,
-    modules: [
-        "@pinia/nuxt",
-        "@nuxtjs/tailwindcss",
-        "@nuxt/fonts",
-        "nuxt-auth-utils",
-        "@nuxt/ui",
-    ],
+    modules: ["@pinia/nuxt", "@nuxt/fonts", "nuxt-auth-utils", "@nuxt/ui"],
     typescript: {
         strict: true,
         typeCheck: false,
@@ -34,6 +29,7 @@ export default defineNuxtConfig({
         optimizeDeps: {
             include: ["@vue/devtools-core", "@vue/devtools-kit", "zod"],
         },
+        plugins: [tailwindcss()],
     },
     runtimeConfig: {
         sessionPassword: process.env.NUXT_SESSION_PASSWORD,
