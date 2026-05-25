@@ -32,7 +32,7 @@
                                 class="mt-3 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg"
                             >
                                 Введите номер группы и получите актуальное
-                                расписание в удобном виде.
+                                расписание.
                             </p>
                         </div>
                     </div>

@@ -31,9 +31,8 @@
                             <p
                                 class="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg"
                             >
-                                Главная страница объединяет публикации
-                                сообщества, профили участников и точки входа в
-                                общение.
+                                На этой странице вы можете ознакомиться с
+                                актуальными публикациями сообщества.
                             </p>
                         </div>
 
@@ -62,7 +61,7 @@
                     </div>
 
                     <div
-                        class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+                        class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1"
                     >
                         <div
                             class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
@@ -81,26 +80,8 @@
                             </div>
                             <p class="mt-2 text-sm leading-6 text-slate-300">
                                 Записи с медиа, реакциями, комментариями и
-                                понятными ссылками.
+                                ссылками.
                             </p>
-                        </div>
-
-                        <div
-                            class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
-                        >
-                            <div
-                                class="flex items-center justify-between text-sm text-slate-300"
-                            >
-                                <span>Профили и чат</span>
-                                <UIcon
-                                    name="i-lucide-message-circle-more"
-                                    class="text-indigo-300"
-                                />
-                            </div>
-                            <div class="mt-3 text-sm leading-6 text-slate-300">
-                                Платформа связывает людей, обсуждения и
-                                публикации в единую социальную среду.
-                            </div>
                         </div>
                     </div>
                 </div>
