@@ -1,5 +1,7 @@
+// drizzle.config.ts
 import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
+import { DB_PATH } from "./server/db/dbPath";
 
 export default defineConfig({
     schema: [
@@ -13,6 +15,6 @@ export default defineConfig({
     out: "./drizzle",
     dialect: "sqlite",
     dbCredentials: {
-        url: "./db.sqlite",
+        url: DB_PATH,
     },
 });
